@@ -7,29 +7,27 @@
 
 class Transazione;
 
+
 class ContoCorrente {
 
 private:
-    std::string idUtente;
+    std::string idUtente {"NULL"};
     float saldo;
     std::vector<Transazione*> storicoTransazioni;
 
 public:
+    ContoCorrente() {}
     ContoCorrente(std::string  idUtente, float saldoIniziale=0.0) :
                     idUtente(std::move(idUtente)), saldo(saldoIniziale) {}
 
-    void invia(float importo, ContoCorrente* destinatario, const std::string& descrizione="");
+    bool invia(float importo, ContoCorrente *destinatario, const std::string &descrizione="Invio");
 
-    void aggiungiTransazione(Transazione* transazione) {
+    bool preleva(float importo, const std::string &descrizione="Prelievo");
+
+    void deposita(float importo, const std::string &descrizione="Deposito");
+
+    void aggiungiTransazione(Transazione *transazione) {
         storicoTransazioni.push_back(transazione);
-    }
-
-    void preleva(float importo) {
-        saldo -= importo;
-    }
-
-    void deposita(float importo) {
-        saldo += importo;
     }
 
     bool verificaDisponibilità(float importo) const {
@@ -44,6 +42,12 @@ public:
     float getSaldo() const {
         return saldo;
     }
+
+    std::vector<Transazione*> getStoricoTransazioni() const {
+        return storicoTransazioni;
+    }
+
 };
+
 
 #endif // MAIN_CPP_CONTOCORRENTE_H

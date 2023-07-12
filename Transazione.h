@@ -15,9 +15,10 @@ protected:
     std::string descrizione;
 
 public:
-    Transazione(std::string  descrizione, float importo) :
-                                                descrizione(std::move(descrizione)), importo(importo) {
-        data = *new Data();
+    Transazione(const std::string &descrizione, float importo) : descrizione(descrizione), importo(importo)
+
+    {
+        data = *(new Data());
     }
 
     virtual void esegui(ContoCorrente* conto) = 0;

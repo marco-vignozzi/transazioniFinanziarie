@@ -4,16 +4,30 @@
 #include <iostream>
 #include "ContoCorrente.h"
 
+
 class Utente {
+
 private:
     std::string id;
-    ContoCorrente conto;
+    ContoCorrente *conto;
+
 public:
-    Utente(ContoCorrente& conto, std::string id) : conto(conto), id(id) {}
+    Utente(const std::string &id) : id(id) {
+        conto = new ContoCorrente();
+    }
+
+    void setContoCorrente(ContoCorrente *conto) {
+        this -> conto = conto;
+    }
+
+    ContoCorrente &getContoCorrente() {
+        return *conto;
+    }
 
     std::string getID() const {
         return id;
     }
+
 };
 
 
