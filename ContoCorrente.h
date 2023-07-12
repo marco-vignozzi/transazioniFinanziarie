@@ -17,6 +17,7 @@ private:
 
 public:
     ContoCorrente() {}
+
     ContoCorrente(std::string  idUtente, float saldoIniziale=0.0) :
                     idUtente(std::move(idUtente)), saldo(saldoIniziale) {}
 
