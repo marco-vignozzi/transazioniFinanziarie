@@ -1,3 +1,6 @@
 13/07/2023 15:31:20 - Transazione in Uscita - Destinatario: Giovanni - Importo: 5 € - Descrizione: Invio
 13/07/2023 15:31:20 - Transazione in Uscita - Destinatario: Giovanni - Importo: 5 € - Descrizione: Invio
 13/07/2023 15:31:20 - Transazione in Ingresso - Mittente: Giovanni - Importo: 4 € - Descrizione: Invio
+13/07/2023 17:44:21 - Transazione in Uscita - Destinatario: Giovanni - Importo: 5 € - Descrizione: Invio
+13/07/2023 17:44:21 - Transazione in Uscita - Destinatario: Giovanni - Importo: 5 € - Descrizione: Invio
+13/07/2023 17:44:21 - Transazione in Ingresso - Mittente: Giovanni - Importo: 4 € - Descrizione: Invio

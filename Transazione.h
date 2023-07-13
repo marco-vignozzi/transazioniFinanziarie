@@ -10,8 +10,8 @@
 class Transazione {
 
 protected:
-    Data data;
     float importo;
+    std::string data;
     std::string descrizione;
     std::string tipoTransazione;
     std::string mittente {""};
@@ -20,7 +20,7 @@ protected:
 public:
     Transazione(const std::string &descrizione, float importo) : descrizione(descrizione), importo(importo)
     {
-        data = *(new Data());
+        data = (new Data()) -> toString();
     }
 
     std::string toString() const;
@@ -35,7 +35,7 @@ public:
         return importo;
     }
 
-    Data getData() const {
+    std::string getData() const {
         return data;
     }
 };

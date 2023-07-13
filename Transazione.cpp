@@ -2,7 +2,7 @@
 
 std::string Transazione::toString() const {
     std::ostringstream oss;
-    oss << data.toString()
+    oss << data
         << " - Transazione in " << tipoTransazione << " - ";
     if( tipoTransazione == "Ingresso" ) {
         if(!mittente.empty()) {

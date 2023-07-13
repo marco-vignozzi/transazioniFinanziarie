@@ -45,6 +45,8 @@ public:
 
     void salvaStoricoTransazioni() const;
 
+    void caricaStoricoTransazioni();
+
     const std::string& getIDUtente() const {
         return idUtente;
     }
