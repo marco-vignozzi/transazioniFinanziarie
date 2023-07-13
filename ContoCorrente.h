@@ -4,6 +4,8 @@
 #include <utility>
 #include <vector>
 #include <iostream>
+#include <sstream>
+
 
 class Transazione;
 
@@ -14,6 +16,7 @@ private:
     std::string idUtente {"NULL"};
     float saldo;
     std::vector<Transazione*> storicoTransazioni;
+    std::string percorsoFile;
 
 public:
     ContoCorrente() {}
@@ -21,11 +24,13 @@ public:
     ContoCorrente(std::string  idUtente, float saldoIniziale=0.0) :
                     idUtente(std::move(idUtente)), saldo(saldoIniziale) {}
 
+    ~ContoCorrente();
+
     bool invia(float importo, ContoCorrente *destinatario, const std::string &descrizione="Invio");
 
-    bool preleva(float importo, const std::string &descrizione="Prelievo");
+    bool preleva(float importo, const std::string &descrizione="Prelievo", const std::string &destinatario="");
 
-    void deposita(float importo, const std::string &descrizione="Deposito");
+    void deposita(float importo, const std::string &descrizione="Deposito", const std::string &mittente="");
 
     void aggiungiTransazione(Transazione *transazione) {
         storicoTransazioni.push_back(transazione);
@@ -35,6 +40,10 @@ public:
         if(importo <= saldo) { return true; }
         else { return false; }
     }
+
+    std::string getStoricoToString() const;
+
+    void salvaStoricoTransazioni() const;
 
     const std::string& getIDUtente() const {
         return idUtente;
@@ -48,6 +57,13 @@ public:
         return storicoTransazioni;
     }
 
+    const std::string& getPercorsoFile() const {
+        return percorsoFile;
+    }
+
+    void setPercorsoFile(const std::string &percorsoFile) {
+        this -> percorsoFile = percorsoFile;
+    }
 };
 
 

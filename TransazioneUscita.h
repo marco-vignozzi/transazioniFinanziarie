@@ -6,8 +6,12 @@
 
 class TransazioneUscita : public Transazione {
 public:
-    TransazioneUscita(const std::string &descrizione, float importo) : Transazione(descrizione, importo) {}
-
+    TransazioneUscita(const std::string &descrizione, float importo, const std::string &destinatario="") :
+                    Transazione(descrizione, importo)
+    {
+        this -> destinatario = destinatario;
+        tipoTransazione = "Uscita";
+    }
     void esegui(ContoCorrente *conto) {
         conto -> preleva(importo);
     }

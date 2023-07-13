@@ -17,4 +17,10 @@ int main() {
 
     std::cout << "Soldi di marco: " << marco->getContoCorrente().getSaldo() << std::endl;
     std::cout << "Soldi di giovanni: " << giovanni->getContoCorrente().getSaldo() << std::endl;
+
+    marco -> getContoCorrente().setPercorsoFile("../contoMarco.txt");
+    giovanni -> getContoCorrente().setPercorsoFile("../contoGiovanni.txt");
+
+    marco -> getContoCorrente().salvaStoricoTransazioni();
+    giovanni -> getContoCorrente().salvaStoricoTransazioni();
 }

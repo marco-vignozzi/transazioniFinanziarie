@@ -92,7 +92,6 @@ TEST_F(ContoCorrenteSuite, CopiaContoCorrente) {
     marco -> getContoCorrente().preleva(1);
     giovanni -> setContoCorrente(&(marco -> getContoCorrente()));
 
-
     EXPECT_EQ( giovanni -> getContoCorrente().getStoricoTransazioni().size(), 1);
     EXPECT_EQ( giovanni -> getContoCorrente().getSaldo(), 9 );
 }

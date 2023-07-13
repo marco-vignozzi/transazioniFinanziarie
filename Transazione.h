@@ -13,13 +13,17 @@ protected:
     Data data;
     float importo;
     std::string descrizione;
+    std::string tipoTransazione;
+    std::string mittente {""};
+    std::string destinatario {""};
 
 public:
     Transazione(const std::string &descrizione, float importo) : descrizione(descrizione), importo(importo)
-
     {
         data = *(new Data());
     }
+
+    std::string toString() const;
 
     virtual void esegui(ContoCorrente* conto) = 0;
 

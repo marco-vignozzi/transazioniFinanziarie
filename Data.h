@@ -29,11 +29,10 @@ public:
         anno = currentTime -> tm_year + 1900;
     }
 
-    std::string stampaData() const {
+    std::string toString() const {
         std::ostringstream oss;
         oss << std::setfill('0');
-        oss << "Data corrente: "
-            << std::setw(2) << giorno << "/"
+        oss << std::setw(2) << giorno << "/"
             << std::setw(2) << mese << "/"
             << anno << " "
             << std::setw(2) << ore << ":"
