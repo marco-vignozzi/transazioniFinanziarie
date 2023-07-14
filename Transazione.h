@@ -14,13 +14,19 @@ protected:
     std::string data;
     std::string descrizione;
     std::string tipoTransazione;
-    std::string mittente {""};
-    std::string destinatario {""};
+    std::string mittente;
+    std::string destinatario;
 
 public:
-    Transazione(const std::string &descrizione, float importo) : descrizione(descrizione), importo(importo)
+    Transazione(const std::string &descrizione, float importo, const std::string &data="") :
+                    descrizione(descrizione), importo(importo)
     {
-        data = (new Data()) -> toString();
+        if ( data.empty() ) {
+            this->data = (new Data())->toString();
+        }
+        else {
+            this->data = data;
+        }
     }
 
     std::string toString() const;

@@ -1,5 +1,7 @@
 #include "Transazione.h"
 
+//TODO: aggiungere saldo
+
 std::string Transazione::toString() const {
     std::ostringstream oss;
     oss << data

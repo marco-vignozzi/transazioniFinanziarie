@@ -6,8 +6,8 @@
 
 class TransazioneIngresso : public Transazione {
 public:
-    TransazioneIngresso(const std::string &descrizione, float importo, const std::string &mittente="") :
-                    Transazione(descrizione, importo)
+    TransazioneIngresso(const std::string &descrizione, float importo,const std::string &mittente="",
+                        const std::string &data="") : Transazione(descrizione, importo, data)
     {
         this -> mittente = mittente;
         tipoTransazione = "Ingresso";

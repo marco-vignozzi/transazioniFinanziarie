@@ -56,8 +56,9 @@ std::string ContoCorrente::getStoricoToString() const {
 
 void ContoCorrente::salvaStoricoTransazioni() const {
     std::ofstream file(percorsoFile, std::ios::app);
-    if ( file.is_open()) {
-        file << getStoricoToString();
+    if ( file.is_open() ) {
+        file << getStoricoToString() << std::endl;
+        file << "Saldo disponibile: " << getSaldo() << " €" << std::endl << std::endl;
         file.close();
         std::cout << "Storico transazioni salvato nel file: " << percorsoFile << std::endl;
     } else {
@@ -66,45 +67,74 @@ void ContoCorrente::salvaStoricoTransazioni() const {
 }
 
 void ContoCorrente::caricaStoricoTransazioni() {
+    //dichiaro variabili utili
     std::ifstream file(percorsoFile);
-    if (file.is_open()) {
+    size_t pos1;
+    size_t pos2;
+    std::string stringaCercata;
+
+    //dichiaro variabili che servono a ricreare le transazioni
+    std::string data;
+    std::string importoStr;
+    float importo;
+    std::string descrizione;
+    std::string mittente;
+    std::string destinatario;
+    std::string saldoStr;
+    float saldo;
+
+    if ( file.is_open() ) {
         std::string linea;
         while (getline(file, linea)) {
-            Transazione *transazione;
-            size_t pos1 = linea.find(" -");                 // cerco la fine della data
+            if (!linea.empty()) {
+                if (linea.find(" -")) {
+                    Transazione *transazione;
 
-            std::string data = linea.substr(0, pos1);           // salvo la data
+                    pos1 = linea.find(" -");                 // cerco la fine della data
+                    data = linea.substr(0, pos1);           // salvo la data
 
+                    stringaCercata = "Importo: ";                     // cerco l'importo
+                    pos1 = linea.find(stringaCercata) + stringaCercata.size();
+                    pos2 = linea.find(" €");
+                    importoStr = linea.substr(pos1, pos2 - pos1);       // salvo l'importo
+                    importo = stof(importoStr);
 
-            std::string stringaCercata = "Importo: ";                     // cerco l'importo
-            pos1 = linea.find(stringaCercata) + stringaCercata.size();
-            size_t pos2 = linea.find(" €");
+                    stringaCercata = "Descrizione: ";                         // cerco la descrizione
+                    pos1 = linea.find(stringaCercata) + stringaCercata.size();
+                    descrizione = linea.substr(pos1, linea.size() - pos1);       // salvo la descrizione
 
-            std::string importoStr = linea.substr(pos1, pos2 - pos1);       // salvo l'importo
-            float importo = stof(importoStr);
-
-            stringaCercata = "Descrizione: ";                         // cerco la descrizione
-            pos1 = linea.find(stringaCercata) + stringaCercata.size();
-
-            std::string descrizione = linea.substr(pos1, linea.size() - pos1);       // salvo la descrizione
-
-            //FIXME: non funziona la divisione in transazioni ingresso uscita
-
-            stringaCercata = "Ingresso - Mittente: ";           // cerco se è una transazione in ingresso
-            if( pos1 != std::string::npos ) {
-                pos1 = linea.find(stringaCercata) + stringaCercata.size();
-                pos2 = linea.find(" -", pos1);
-                std::string mittente = linea.substr(pos1, pos2 - pos1);
-                transazione = new TransazioneIngresso(descrizione, importo, mittente);
+                    stringaCercata = "Ingresso - ";           // cerco se è una transazione in ingresso
+                    if (linea.find(stringaCercata) != std::string::npos) {
+                        pos1 = linea.find(stringaCercata) + stringaCercata.size();
+                        if (linea[pos1] == 'M') {                 // vedo se c'è un mittente (altrimenti è un deposito)
+                            stringaCercata = "Mittente: ";
+                            pos1 += stringaCercata.size();
+                            pos2 = linea.find(" -", pos1);
+                            mittente = linea.substr(pos1, pos2 - pos1);     // salvo il mittente
+                            transazione = new TransazioneIngresso(descrizione, importo, mittente, data);
+                        } else {                  // se invece è un deposito...
+                            transazione = new TransazioneIngresso(descrizione, importo, "", data);
+                        }
+                    } else {
+                        stringaCercata = "Uscita - Destinatario: ";             // cerco se c'è il destinatario
+                        if (linea.find(stringaCercata) != std::string::npos) {
+                            pos1 = linea.find(stringaCercata) + stringaCercata.size();
+                            pos2 = linea.find(" -", pos1);
+                            destinatario = linea.substr(pos1, pos2 - pos1);     // salvo il destinatario
+                            transazione = new TransazioneUscita(descrizione, importo, destinatario, data);
+                        } else {          // altrimenti è un prelievo
+                            transazione = new TransazioneUscita(descrizione, importo, "", data);
+                        }
+                    }
+                    storicoTransazioni.push_back(transazione);
+                }
             }
             else {
-                stringaCercata = "Uscita - Destinatario: ";
-                pos1 = linea.find(stringaCercata) + stringaCercata.size() + 1;
-                pos2 = linea.find(" -", pos1);
-                std::string destinatario = linea.substr(pos1, pos2 - pos1);
-                transazione = new TransazioneUscita(descrizione, importo, destinatario);
+                pos1 = linea.find(": ");
+                pos2 = linea.find(" €");
+                saldoStr = linea.substr(pos1, pos2 - pos1);
+                saldo = stof(saldoStr);
             }
-            storicoTransazioni.push_back(transazione);
         }
         file.close();
         std::cout << "Storico transazioni caricato dal file: " << percorsoFile << std::endl;
