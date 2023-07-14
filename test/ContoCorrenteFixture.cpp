@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <fstream>
 #include "../Utente.h"
 
 
@@ -96,6 +97,40 @@ TEST_F(ContoCorrenteSuite, CopiaContoCorrente) {
     EXPECT_EQ( giovanni -> getContoCorrente().getSaldo(), 9 );
 }
 
-TEST_F(ContoCorrenteSuite, CaricaContoCorrente) {
+// In questo test confronto lo storico ottenuto caricandolo dal file con il contenuto del file stesso
 
+TEST_F(ContoCorrenteSuite, CaricaTransazioni) {
+    ASSERT_EQ(marco->getContoCorrente().getStoricoTransazioni().size(), 0);
+    std::string percorsoFile = "../../test/docs/contoMarco.txt";
+    std::string nuovoPercorso = "../../test/docs/nuovaCopiaContoMarco.txt";
+
+    marco->getContoCorrente().setPercorsoFile(percorsoFile);
+    marco->getContoCorrente().caricaDati();
+    marco->getContoCorrente().setPercorsoFile(nuovoPercorso);
+    marco->getContoCorrente().salvaStoricoTransazioni();
+
+    std::ifstream fileVecchio(percorsoFile);
+    std::ifstream fileNuovo(nuovoPercorso);
+    std::ostringstream contenutoFileVecchio;
+    std::ostringstream contenutoFileNuovo;
+
+    if ( fileVecchio.is_open() ) {
+        std::string linea;
+        while ( std::getline(fileVecchio, linea) ) {
+            contenutoFileVecchio << linea << std::endl;
+        }
+        fileVecchio.close();
+    } else {
+        std::cout << "Impossibile aprire il file: " << percorsoFile << std::endl;
+    }
+    if ( fileNuovo.is_open() ) {
+        std::string linea;
+        while ( std::getline(fileNuovo, linea) ) {
+            contenutoFileNuovo << linea << std::endl;
+        }
+        fileNuovo.close();
+    } else {
+        std::cout << "Impossibile aprire il file: " << nuovoPercorso << std::endl;
+    }
+    EXPECT_EQ(contenutoFileNuovo.str(), contenutoFileVecchio.str());
 }

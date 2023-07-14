@@ -51,14 +51,14 @@ std::string ContoCorrente::getStoricoToString() const {
     for(const auto &transazione : storicoTransazioni) {
         oss << transazione->toString();
     }
+    oss << std::endl << "Saldo disponibile: " << getSaldo() << " €" << std::endl << std::endl;
     return oss.str();
 }
 
 void ContoCorrente::salvaStoricoTransazioni() const {
-    std::ofstream file(percorsoFile, std::ios::app);
+    std::ofstream file(percorsoFile);
     if ( file.is_open() ) {
-        file << getStoricoToString() << std::endl;
-        file << "Saldo disponibile: " << getSaldo() << " €" << std::endl << std::endl;
+        file << getStoricoToString();
         file.close();
         std::cout << "Storico transazioni salvato nel file: " << percorsoFile << std::endl;
     } else {
@@ -66,7 +66,7 @@ void ContoCorrente::salvaStoricoTransazioni() const {
     }
 }
 
-void ContoCorrente::caricaStoricoTransazioni() {
+void ContoCorrente::caricaDati() {
     //dichiaro variabili utili
     std::ifstream file(percorsoFile);
     size_t pos1;
@@ -81,13 +81,12 @@ void ContoCorrente::caricaStoricoTransazioni() {
     std::string mittente;
     std::string destinatario;
     std::string saldoStr;
-    float saldo;
 
     if ( file.is_open() ) {
         std::string linea;
-        while (getline(file, linea)) {
-            if (!linea.empty()) {
-                if (linea.find(" -")) {
+        while ( getline(file, linea) ) {
+            if ( !linea.empty() ) {
+                if ( linea.find(" -") != std::string::npos ) {
                     Transazione *transazione;
 
                     pos1 = linea.find(" -");                 // cerco la fine della data
@@ -126,14 +125,17 @@ void ContoCorrente::caricaStoricoTransazioni() {
                             transazione = new TransazioneUscita(descrizione, importo, "", data);
                         }
                     }
-                    storicoTransazioni.push_back(transazione);
+                    this->storicoTransazioni.push_back(transazione);
                 }
-            }
-            else {
-                pos1 = linea.find(": ");
-                pos2 = linea.find(" €");
-                saldoStr = linea.substr(pos1, pos2 - pos1);
-                saldo = stof(saldoStr);
+                else {
+                    stringaCercata = ": ";
+                    pos1 = linea.find(stringaCercata) + stringaCercata.size();
+                    if ( pos1 != std::string::npos ) {
+                        pos2 = linea.find(" €");
+                        saldoStr = linea.substr(pos1, pos2 - pos1);
+                        this->saldo = stof(saldoStr);
+                    }
+                }
             }
         }
         file.close();
