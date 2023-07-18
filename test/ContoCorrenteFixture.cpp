@@ -16,6 +16,40 @@ protected:
         giovanni->setContoCorrente(contoGiovanni);
     }
 
+    // Questo metodo è utilizzato per confrontare il contenuto di 2 file.
+    // Se è uguale ritorna "true", altrimenti "false".
+    bool confrontaContenutoFile(const std::string &percorso1, const std::string &percorso2) {
+        std::ifstream file1(percorso1);
+        std::ifstream file2(percorso2);
+        std::ostringstream contenutoFile1;
+        std::ostringstream contenutoFile2;
+
+        if ( file1.is_open() ) {
+            std::string linea;
+            while ( std::getline(file1, linea) ) {
+                contenutoFile1 << linea << std::endl;
+            }
+            file1.close();
+        } else {
+            std::cout << "Impossibile aprire il file: " << percorso1 << std::endl;
+            return false;
+        }
+        if ( file2.is_open() ) {
+            std::string linea;
+            while ( std::getline(file2, linea) ) {
+                contenutoFile2 << linea << std::endl;
+            }
+            file2.close();
+        } else {
+            std::cout << "Impossibile aprire il file: " << percorso2 << std::endl;
+            return false;
+        }
+        if ( contenutoFile1.str() == contenutoFile2.str() ) {
+            return true;
+        }
+        return false;
+    }
+
     Utente* marco;
     Utente* giovanni;
 };
@@ -101,7 +135,7 @@ TEST_F(ContoCorrenteSuite, CopiaContoCorrente) {
 // Per farlo carica i dati dal percorso file "test/docs/contoMarco.txt" nel conto dell'utente "marco" e
 // li salva nel nuovo percorso "test/docs/nuovaCopiaContoMarco.txt", per poi controllare l'uguaglianza dei due file.
 
-TEST_F(ContoCorrenteSuite, CaricaDatiConto) {
+TEST_F(ContoCorrenteSuite, CaricaDatiContoVuoto) {
     ASSERT_EQ(marco->getContoCorrente().getStoricoTransazioni().size(), 0);
     std::string percorsoFile = "../../test/docs/contoMarco.txt";
     std::string nuovoPercorso = "../../test/docs/nuovaCopiaContoMarco.txt";
@@ -111,28 +145,20 @@ TEST_F(ContoCorrenteSuite, CaricaDatiConto) {
     marco->getContoCorrente().setPercorsoFile(nuovoPercorso);
     ASSERT_TRUE(marco->getContoCorrente().salvaDati());
 
-    std::ifstream fileVecchio(percorsoFile);
-    std::ifstream fileNuovo(nuovoPercorso);
-    std::ostringstream contenutoFileVecchio;
-    std::ostringstream contenutoFileNuovo;
+    EXPECT_TRUE(confrontaContenutoFile(percorsoFile, nuovoPercorso));
+}
 
-    if ( fileVecchio.is_open() ) {
-        std::string linea;
-        while ( std::getline(fileVecchio, linea) ) {
-            contenutoFileVecchio << linea << std::endl;
-        }
-        fileVecchio.close();
-    } else {
-        std::cout << "Impossibile aprire il file: " << percorsoFile << std::endl;
-    }
-    if ( fileNuovo.is_open() ) {
-        std::string linea;
-        while ( std::getline(fileNuovo, linea) ) {
-            contenutoFileNuovo << linea << std::endl;
-        }
-        fileNuovo.close();
-    } else {
-        std::cout << "Impossibile aprire il file: " << nuovoPercorso << std::endl;
-    }
-    EXPECT_EQ(contenutoFileNuovo.str(), contenutoFileVecchio.str());
+TEST_F(ContoCorrenteSuite, CaricaDatiContoNonVuoto) {
+    ASSERT_EQ(marco->getContoCorrente().getStoricoTransazioni().size(), 0);
+    ASSERT_TRUE(marco->getContoCorrente().deposita(10));
+    ASSERT_EQ(marco->getContoCorrente().getStoricoTransazioni().size(), 1);
+    std::string percorsoFile = "../../test/docs/contoMarco.txt";
+    std::string nuovoPercorso = "../../test/docs/nuovaCopiaContoMarco.txt";
+
+    marco->getContoCorrente().setPercorsoFile(percorsoFile);
+    ASSERT_TRUE(marco->getContoCorrente().caricaDati());
+    marco->getContoCorrente().setPercorsoFile(nuovoPercorso);
+    ASSERT_TRUE(marco->getContoCorrente().salvaDati());
+
+    EXPECT_TRUE(confrontaContenutoFile(percorsoFile, nuovoPercorso));
 }

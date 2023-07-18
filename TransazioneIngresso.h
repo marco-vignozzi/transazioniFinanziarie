@@ -14,7 +14,7 @@ public:
     }
 
     bool esegui(ContoCorrente *conto) override {
-        return conto -> deposita(importo);
+        return conto -> deposita(this->importo, this->descrizione, this->mittente);
     }
 
 };

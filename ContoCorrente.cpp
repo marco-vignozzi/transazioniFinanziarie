@@ -81,6 +81,7 @@ bool ContoCorrente::salvaDati() const {
 }
 
 // Questo metodo permette di caricare i dati di un conto corrente (saldo e storico transazioni) da un file ".txt".
+// Lo storico delle transazioni del conto che chiama questo metodo verrà sovrascritto, così come il saldo.
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::caricaDati() {
     //dichiaro variabili utili
@@ -99,6 +100,8 @@ bool ContoCorrente::caricaDati() {
     std::string saldoStr;
 
     if ( file.is_open() ) {
+        //svuoto il vettore delle transazioni
+        this->storicoTransazioni.clear();
         std::string linea;
         while ( getline(file, linea) ) {
             if ( !linea.empty() ) {
@@ -155,11 +158,11 @@ bool ContoCorrente::caricaDati() {
             }
         }
         file.close();
-        std::cout << "Storico transazioni caricato dal file: " << percorsoFile << std::endl;
+        std::cout << "Storico transazioni caricato dal file: " << this->percorsoFile << std::endl;
         return true;
     }
     else {
-        std::cout << "Impossibile aprire il file: " << percorsoFile << std::endl;
+        std::cout << "Impossibile aprire il file: " << this->percorsoFile << std::endl;
         return false;
     }
 }

@@ -14,7 +14,7 @@ public:
     }
 
     bool esegui(ContoCorrente *conto) override {
-        return conto -> preleva(importo);
+        return conto -> preleva(this->importo, this->descrizione, this->destinatario);
     }
 
 };
