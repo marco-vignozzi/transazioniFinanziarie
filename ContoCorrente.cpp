@@ -4,28 +4,39 @@
 #include "TransazioneUscita.h"
 
 
+// Questo metodo esegue lo scambio di fondi tra due conti. Lo scambio è effettuato eseguendo un prelievo (se possibile)
+// dal conto chiamante seguito da un deposito sul conto "destinatario", passato come parametro.
+// Vengono create due transizioni, in ingresso per il destinatario e in uscita per il chiamante.
 bool ContoCorrente::invia(float importo, ContoCorrente *destinatario, const std::string &descrizione) {
     if ( importo <= 0 ) {
        std::cout << "Impossibile inviare quantità negative o nulle di denaro." << std::endl;
         return false;
     }
-    if ( preleva(importo, descrizione, destinatario -> getIDUtente()) ) {
-        destinatario -> deposita(importo, descrizione, getIDUtente());
+    Transazione *transMittente = new TransazioneUscita(descrizione, importo, destinatario->getIDUtente());
+    Transazione *transDestinatario = new TransazioneIngresso(descrizione, importo, getIDUtente());
+    if ( transMittente->esegui(this) ) {
+        transDestinatario->esegui(destinatario);
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
+//    if ( preleva(importo, descrizione, destinatario -> getIDUtente()) ) {
+//        destinatario -> deposita(importo, descrizione, getIDUtente());
+//        return true;
+//    }
+//    else {
+//        return false;
+//    }
 }
 
-void ContoCorrente::deposita(float importo, const std::string &descrizione, const std::string &mittente) {
+bool ContoCorrente::deposita(float importo, const std::string &descrizione, const std::string &mittente) {
     if ( importo <= 0 ) {
         std::cout << "Impossibile depositare quantità negative o nulle di denaro." << std::endl;
-        return;
+        return false;
     }
     Transazione *transazione = new TransazioneIngresso(descrizione, importo, mittente);
     saldo += importo;
     aggiungiTransazione(transazione);
+    return true;
 }
 
 bool ContoCorrente::preleva(float importo, const std::string &descrizione, const std::string &destinatario) {
@@ -51,22 +62,25 @@ std::string ContoCorrente::getStoricoToString() const {
     for(const auto &transazione : storicoTransazioni) {
         oss << transazione->toString();
     }
-    oss << std::endl << "Saldo disponibile: " << getSaldo() << " €" << std::endl << std::endl;
     return oss.str();
 }
 
-void ContoCorrente::salvaStoricoTransazioni() const {
+bool ContoCorrente::salvaDati() const {
     std::ofstream file(percorsoFile);
     if ( file.is_open() ) {
-        file << getStoricoToString();
+        file << getStoricoToString() << std::endl;
+        file << "Saldo disponibile: " << getSaldo() << " €" << std::endl << std::endl;
         file.close();
         std::cout << "Storico transazioni salvato nel file: " << percorsoFile << std::endl;
-    } else {
+        return true;
+    }
+    else {
         std::cout << "Impossibile aprire il file: " << percorsoFile << std::endl;
+        return false;
     }
 }
 
-void ContoCorrente::caricaDati() {
+bool ContoCorrente::caricaDati() {
     //dichiaro variabili utili
     std::ifstream file(percorsoFile);
     size_t pos1;
@@ -140,9 +154,11 @@ void ContoCorrente::caricaDati() {
         }
         file.close();
         std::cout << "Storico transazioni caricato dal file: " << percorsoFile << std::endl;
+        return true;
     }
     else {
         std::cout << "Impossibile aprire il file: " << percorsoFile << std::endl;
+        return false;
     }
 }
 

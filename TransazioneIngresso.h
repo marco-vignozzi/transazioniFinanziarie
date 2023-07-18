@@ -13,8 +13,8 @@ public:
         tipoTransazione = "Ingresso";
     }
 
-    void esegui(ContoCorrente *conto) {
-        conto -> deposita(importo);
+    bool esegui(ContoCorrente *conto) override {
+        return conto -> deposita(importo);
     }
 
 };

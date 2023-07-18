@@ -34,8 +34,8 @@ int main() {
     //std::cout << "Soldi di giovanni: " << giovanni->getContoCorrente().getSaldo() << std::endl;
     //std::cout << "Soldi di gemma: " << sergio->getContoCorrente().getSaldo() << std::endl;
 
-    marco->getContoCorrente().salvaStoricoTransazioni();
-    giovanni->getContoCorrente().salvaStoricoTransazioni();
-    gemma->getContoCorrente().salvaStoricoTransazioni();
+    marco->getContoCorrente().salvaDati();
+    giovanni->getContoCorrente().salvaDati();
+    gemma->getContoCorrente().salvaDati();
 }
 

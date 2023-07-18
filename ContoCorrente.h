@@ -30,7 +30,7 @@ public:
 
     bool preleva(float importo, const std::string &descrizione="Prelievo", const std::string &destinatario="");
 
-    void deposita(float importo, const std::string &descrizione="Deposito", const std::string &mittente="");
+    bool deposita(float importo, const std::string &descrizione="Deposito", const std::string &mittente="");
 
     void aggiungiTransazione(Transazione *transazione) {
         storicoTransazioni.push_back(transazione);
@@ -43,9 +43,9 @@ public:
 
     std::string getStoricoToString() const;
 
-    void salvaStoricoTransazioni() const;
+    bool salvaDati() const;
 
-    void caricaDati();
+    bool caricaDati();
 
     const std::string& getIDUtente() const {
         return idUtente;

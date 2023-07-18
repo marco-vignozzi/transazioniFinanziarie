@@ -31,7 +31,7 @@ public:
 
     std::string toString() const;
 
-    virtual void esegui(ContoCorrente* conto) = 0;
+    virtual bool esegui(ContoCorrente* conto) = 0;
 
     std::string getDescrizione() const {
         return descrizione;
