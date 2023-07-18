@@ -97,9 +97,9 @@ TEST_F(ContoCorrenteSuite, CopiaContoCorrente) {
     EXPECT_EQ( giovanni -> getContoCorrente().getSaldo(), 9 );
 }
 
-// Questo test verifica che il caricamento da file dei dati di un conto funzioni correttamente.
+// Questo test verifica che il caricamento da file dei dati di un conto corrente funzioni correttamente.
 // Per farlo carica i dati dal percorso file "test/docs/contoMarco.txt" nel conto dell'utente "marco" e
-// li salva nel nuovo percorso "test/docs/nuovaCopiaContoMarco.txt", per poi testare l'uguaglianza dei due file.
+// li salva nel nuovo percorso "test/docs/nuovaCopiaContoMarco.txt", per poi controllare l'uguaglianza dei due file.
 
 TEST_F(ContoCorrenteSuite, CaricaDatiConto) {
     ASSERT_EQ(marco->getContoCorrente().getStoricoTransazioni().size(), 0);

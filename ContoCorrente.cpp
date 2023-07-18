@@ -6,7 +6,8 @@
 
 // Questo metodo esegue lo scambio di fondi tra due conti. Lo scambio è effettuato eseguendo un prelievo (se possibile)
 // dal conto chiamante seguito da un deposito sul conto "destinatario", passato come parametro.
-// Vengono create due transizioni, in ingresso per il destinatario e in uscita per il chiamante.
+// Vengono create ed eseguite due transizioni, in ingresso per il destinatario e in uscita per il chiamante.
+// Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::invia(float importo, ContoCorrente *destinatario, const std::string &descrizione) {
     if ( importo <= 0 ) {
        std::cout << "Impossibile inviare quantità negative o nulle di denaro." << std::endl;
@@ -19,15 +20,10 @@ bool ContoCorrente::invia(float importo, ContoCorrente *destinatario, const std:
         return true;
     }
     return false;
-//    if ( preleva(importo, descrizione, destinatario -> getIDUtente()) ) {
-//        destinatario -> deposita(importo, descrizione, getIDUtente());
-//        return true;
-//    }
-//    else {
-//        return false;
-//    }
 }
 
+// Questo metodo aggiunge fondi al conto corrente e salva la relativa transazione in ingresso.
+// Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::deposita(float importo, const std::string &descrizione, const std::string &mittente) {
     if ( importo <= 0 ) {
         std::cout << "Impossibile depositare quantità negative o nulle di denaro." << std::endl;
@@ -39,6 +35,8 @@ bool ContoCorrente::deposita(float importo, const std::string &descrizione, cons
     return true;
 }
 
+// Questo metodo sottrae fondi al conto corrente e salva la relativa transazione in uscita.
+// Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::preleva(float importo, const std::string &descrizione, const std::string &destinatario) {
     if ( importo <= 0 ) {
         std::cout << "Impossibile prelevare quantità negative o nulle di denaro." << std::endl;
@@ -65,6 +63,8 @@ std::string ContoCorrente::getStoricoToString() const {
     return oss.str();
 }
 
+// Questo metodo permette di salvare i dati di un conto corrente (saldo e storico transazioni) in un file ".txt".
+// Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::salvaDati() const {
     std::ofstream file(percorsoFile);
     if ( file.is_open() ) {
@@ -80,6 +80,8 @@ bool ContoCorrente::salvaDati() const {
     }
 }
 
+// Questo metodo permette di caricare i dati di un conto corrente (saldo e storico transazioni) da un file ".txt".
+// Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::caricaDati() {
     //dichiaro variabili utili
     std::ifstream file(percorsoFile);

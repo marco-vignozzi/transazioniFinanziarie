@@ -12,6 +12,7 @@ public:
         this -> destinatario = destinatario;
         tipoTransazione = "Uscita";
     }
+
     bool esegui(ContoCorrente *conto) override {
         return conto -> preleva(importo);
     }
