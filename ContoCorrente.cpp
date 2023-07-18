@@ -69,7 +69,7 @@ bool ContoCorrente::salvaDati() const {
     std::ofstream file(percorsoFile);
     if ( file.is_open() ) {
         file << getStoricoToString() << std::endl;
-        file << "Saldo disponibile: " << getSaldo() << " €" << std::endl << std::endl;
+        file << "Saldo disponibile: " << FIXED_FLOAT(getSaldo()) << " €" << std::endl << std::endl;
         file.close();
         std::cout << "Storico transazioni salvato nel file: " << percorsoFile << std::endl;
         return true;

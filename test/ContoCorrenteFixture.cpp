@@ -18,7 +18,7 @@ protected:
 
     // Questo metodo è utilizzato per confrontare il contenuto di 2 file.
     // Se è uguale ritorna "true", altrimenti "false".
-    bool confrontaContenutoFile(const std::string &percorso1, const std::string &percorso2) {
+    bool confrontaContenutoFile(const std::string &percorso1, const std::string &percorso2) const {
         std::ifstream file1(percorso1);
         std::ifstream file2(percorso2);
         std::ostringstream contenutoFile1;

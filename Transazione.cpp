@@ -15,7 +15,7 @@ std::string Transazione::toString() const {
             oss << "Destinatario: " << destinatario << " - ";
         }
     }
-    oss << "Importo: " << importo << " € - "
+    oss << "Importo: " << FIXED_FLOAT(importo) << " € - "
         << "Descrizione: " << descrizione
         << std::endl;
     return oss.str();

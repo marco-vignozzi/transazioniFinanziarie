@@ -13,7 +13,7 @@ int main() {
     marco->setContoCorrente(contoMarco);
     giovanni->setContoCorrente(contoGiovanni);
     gemma->setContoCorrente(contoGemma);
-    marco->getContoCorrente().setPercorsoFile("../docs/contoMarco.txt");
+    marco->getContoCorrente().setPercorsoFile("../test/docs/contoMarco.txt");
     giovanni->getContoCorrente().setPercorsoFile("../docs/contoGiovanni.txt");
     gemma->getContoCorrente().setPercorsoFile("../docs/contoGemma.txt");
 

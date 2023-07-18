@@ -1,6 +1,9 @@
 #ifndef MAIN_CPP_CONTOCORRENTE_H
 #define MAIN_CPP_CONTOCORRENTE_H
 
+// macro per stampare i float con 2 cifre decimali
+#define FIXED_FLOAT(x) std::fixed << std::setprecision(2) << x
+
 #include <utility>
 #include <vector>
 #include <iostream>
@@ -32,6 +35,12 @@ public:
 
     bool deposita(float importo, const std::string &descrizione="Deposito", const std::string &mittente="");
 
+    std::string getStoricoToString() const;
+
+    bool salvaDati() const;
+
+    bool caricaDati();
+
     void aggiungiTransazione(Transazione *transazione) {
         storicoTransazioni.push_back(transazione);
     }
@@ -40,12 +49,6 @@ public:
         if(importo <= saldo) { return true; }
         else { return false; }
     }
-
-    std::string getStoricoToString() const;
-
-    bool salvaDati() const;
-
-    bool caricaDati();
 
     const std::string& getIDUtente() const {
         return idUtente;
