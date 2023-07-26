@@ -1,7 +1,6 @@
 #ifndef MAIN_CPP_UTENTE_H
 #define MAIN_CPP_UTENTE_H
 
-#include <iostream>
 #include "ContoCorrente.h"
 
 

@@ -1,8 +1,8 @@
-18/07/2023 19:42:11 - Transazione in Uscita - Destinatario: Giovanni - Importo: 5.00 € - Descrizione: Invio
-18/07/2023 19:42:11 - Transazione in Uscita - Destinatario: Gemma - Importo: 5.00 € - Descrizione: Invio
-18/07/2023 19:42:11 - Transazione in Ingresso - Mittente: Giovanni - Importo: 4.00 € - Descrizione: Invio
-18/07/2023 19:42:11 - Transazione in Ingresso - Importo: 14.80 € - Descrizione: Deposito
-18/07/2023 19:42:11 - Transazione in Uscita - Importo: 3.00 € - Descrizione: Prelievo
+26/07/2023 14:14:03 - Transazione in Uscita - Destinatario: Giovanni - Importo: 5.00 € - Descrizione: Invio
+26/07/2023 14:14:03 - Transazione in Uscita - Destinatario: Gemma - Importo: 5.00 € - Descrizione: Invio
+26/07/2023 14:14:03 - Transazione in Ingresso - Mittente: Giovanni - Importo: 4.00 € - Descrizione: Invio
+26/07/2023 14:14:03 - Transazione in Ingresso - Importo: 14.80 € - Descrizione: Deposito
+26/07/2023 14:14:03 - Transazione in Uscita - Importo: 3.00 € - Descrizione: Prelievo
 
 Saldo disponibile: 15.80 €
 

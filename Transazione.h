@@ -1,8 +1,6 @@
 #ifndef MAIN_CPP_TRANSAZIONE_H
 #define MAIN_CPP_TRANSAZIONE_H
 
-#include <iostream>
-#include <utility>
 #include "Data.h"
 #include "ContoCorrente.h"
 

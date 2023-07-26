@@ -148,6 +148,7 @@ TEST_F(ContoCorrenteSuite, CaricaDatiContoVuoto) {
     EXPECT_TRUE(confrontaContenutoFile(percorsoFile, nuovoPercorso));
 }
 
+// in questo test ci si aspetta che i dati del conto vengano sovrascritti con quelli caricati da file.
 TEST_F(ContoCorrenteSuite, CaricaDatiContoNonVuoto) {
     ASSERT_EQ(marco->getContoCorrente().getStoricoTransazioni().size(), 0);
     ASSERT_TRUE(marco->getContoCorrente().deposita(10));
