@@ -69,3 +69,5 @@ che vengono aggiunte al vettore `storicoTransazioni`.
 In ultimo vengono anche testati i metodi `salvaDati` e `caricaDati`, verificando che un salvataggio immediatamente 
 successivo ad un caricamento produca lo stesso contenuto del _file_ caricato. Si verifica anche che la sovrascrittura
 di un conto a seguito di un caricamento venga effettuata correttamente.
+
+**N.B.** l'eseguibile `runTests` deve essere eseguito dalla sottocartella "build/test" affinchè funzioni correttamente.
