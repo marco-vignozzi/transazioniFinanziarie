@@ -16,9 +16,9 @@ class Transazione;
 class ContoCorrente {
 
 private:
-    std::string idUtente {"NULL"};
+    std::string idUtente {"NULL"}; // togliere
     float saldo;
-    std::vector<Transazione*> storicoTransazioni;
+    std::vector<Transazione*> storicoTransazioni;  // TODO: usare smart-pointer
     std::string percorsoFile;
 
 public:

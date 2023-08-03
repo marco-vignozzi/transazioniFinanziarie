@@ -9,9 +9,9 @@ int main() {
     ContoCorrente *contoGiovanni = new ContoCorrente(giovanni->getID());
     ContoCorrente *contoGemma = new ContoCorrente(gemma->getID(), 20.3);
 
-    marco->setContoCorrente(contoMarco);
-    giovanni->setContoCorrente(contoGiovanni);
-    gemma->setContoCorrente(contoGemma);
+    marco->addConto(contoMarco);
+    giovanni->addConto(contoGiovanni);
+    gemma->addConto(contoGemma);
     marco->getContoCorrente().setPercorsoFile("../test/docs/contoMarco.txt");
     giovanni->getContoCorrente().setPercorsoFile("../docs/contoGiovanni.txt");
     gemma->getContoCorrente().setPercorsoFile("../docs/contoGemma.txt");

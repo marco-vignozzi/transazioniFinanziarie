@@ -12,8 +12,8 @@ protected:
         ContoCorrente *contoMarco = new ContoCorrente(marco->getID(), 10.0);
         ContoCorrente *contoGiovanni = new ContoCorrente(giovanni->getID());
 
-        marco->setContoCorrente(contoMarco);
-        giovanni->setContoCorrente(contoGiovanni);
+        marco->addConto(contoMarco);
+        giovanni->addConto(contoGiovanni);
     }
 
     // Questo metodo è utilizzato per confrontare il contenuto di 2 file.
@@ -125,7 +125,7 @@ TEST_F(ContoCorrenteSuite, CopiaContoCorrente) {
     ASSERT_EQ( giovanni -> getContoCorrente().getSaldo(), 0 );
 
     ASSERT_TRUE(marco -> getContoCorrente().preleva(1));
-    giovanni -> setContoCorrente(&(marco -> getContoCorrente()));
+    giovanni->addConto(&(marco->getContoCorrente()));
 
     EXPECT_EQ( giovanni -> getContoCorrente().getStoricoTransazioni().size(), 1);
     EXPECT_EQ( giovanni -> getContoCorrente().getSaldo(), 9 );

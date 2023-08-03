@@ -1,7 +1,6 @@
 #ifndef MAIN_CPP_TRANSAZIONE_H
 #define MAIN_CPP_TRANSAZIONE_H
 
-#include "Data.h"
 #include "ContoCorrente.h"
 
 
@@ -20,7 +19,7 @@ public:
                     descrizione(descrizione), importo(importo)
     {
         if ( data.empty() ) {
-            this->data = (new Data())->toString();
+            this->data = creaData();
         }
         else {
             this->data = data;
@@ -28,6 +27,8 @@ public:
     }
 
     std::string toString() const;
+
+    std::string creaData() const;
 
     virtual bool esegui(ContoCorrente* conto) = 0;
 

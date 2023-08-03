@@ -20,7 +20,7 @@ bool ContoCorrente::invia(float importo, ContoCorrente *destinatario, const std:
         return true;
     }
     return false;
-}
+} // TODO: gestire logica transazioni direttamente nel conto
 
 // Questo metodo aggiunge fondi al conto corrente e salva la relativa transazione in ingresso.
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
@@ -62,6 +62,8 @@ std::string ContoCorrente::getStoricoToString() const {
     }
     return oss.str();
 }
+
+// TODO aggiungere ricerca, modifica e cancellazione delle transazioni. ricerca restituisce vettore o lista.
 
 // Questo metodo permette di salvare i dati di un conto corrente (saldo e storico transazioni) in un file ".txt".
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
@@ -173,3 +175,4 @@ ContoCorrente::~ContoCorrente() {
     }
 }
 
+// money pro
