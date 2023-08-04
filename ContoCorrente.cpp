@@ -1,26 +1,23 @@
 #include <fstream>
 #include "ContoCorrente.h"
-#include "TransazioneIngresso.h"
-#include "TransazioneUscita.h"
-
+#include "Transazione.h"
 
 // Questo metodo esegue lo scambio di fondi tra due conti. Lo scambio è effettuato eseguendo un prelievo (se possibile)
 // dal conto chiamante seguito da un deposito sul conto "destinatario", passato come parametro.
 // Vengono create ed eseguite due transizioni, in ingresso per il destinatario e in uscita per il chiamante.
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
-bool ContoCorrente::invia(float importo, ContoCorrente *destinatario, const std::string &descrizione) {
+bool ContoCorrente::invia(float importo, std::shared_ptr<ContoCorrente> destinatario, const std::string &descrizione) {
     if ( importo <= 0 ) {
        std::cout << "Impossibile inviare quantità negative o nulle di denaro." << std::endl;
         return false;
     }
-    Transazione *transMittente = new TransazioneUscita(descrizione, importo, destinatario->getIDUtente());
-    Transazione *transDestinatario = new TransazioneIngresso(descrizione, importo, getIDUtente());
-    if ( transMittente->esegui(this) ) {
-        transDestinatario->esegui(destinatario);
+    if ( preleva(importo, descrizione, destinatario->getIDUtente()) ) {
+        deposita(importo, descrizione, destinatario->getIDUtente());
         return true;
     }
     return false;
-} // TODO: gestire logica transazioni direttamente nel conto
+}
+// TODO: gestire logica transazioni direttamente nel conto
 
 // Questo metodo aggiunge fondi al conto corrente e salva la relativa transazione in ingresso.
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
@@ -29,7 +26,7 @@ bool ContoCorrente::deposita(float importo, const std::string &descrizione, cons
         std::cout << "Impossibile depositare quantità negative o nulle di denaro." << std::endl;
         return false;
     }
-    Transazione *transazione = new TransazioneIngresso(descrizione, importo, mittente);
+    std::shared_ptr<Transazione> transazione( new Transazione(descrizione, importo, "ingresso", mittente) );
     saldo += importo;
     aggiungiTransazione(transazione);
     return true;
@@ -43,7 +40,7 @@ bool ContoCorrente::preleva(float importo, const std::string &descrizione, const
         return false;
     }
     if ( verificaDisponibilità(importo) ) {
-        Transazione *transazione = new TransazioneUscita(descrizione, importo, destinatario);
+        std::shared_ptr<Transazione> transazione( new Transazione(descrizione, importo, "uscita", destinatario) );
         saldo -= importo;
         aggiungiTransazione(transazione);
         return true;
@@ -93,12 +90,7 @@ bool ContoCorrente::caricaDati() {
     std::string stringaCercata;
 
     //dichiaro variabili che servono a ricreare le transazioni
-    std::string data;
     std::string importoStr;
-    float importo;
-    std::string descrizione;
-    std::string mittente;
-    std::string destinatario;
     std::string saldoStr;
 
     if ( file.is_open() ) {
@@ -108,20 +100,21 @@ bool ContoCorrente::caricaDati() {
         while ( getline(file, linea) ) {
             if ( !linea.empty() ) {
                 if ( linea.find(" -") != std::string::npos ) {
-                    Transazione *transazione;
+                    std::shared_ptr<Transazione> transazione( new Transazione());
 
                     pos1 = linea.find(" -");                 // cerco la fine della data
-                    data = linea.substr(0, pos1);           // salvo la data
+                    transazione->setData( linea.substr(0, pos1) );           // salvo la data
+
 
                     stringaCercata = "Importo: ";                     // cerco l'importo
                     pos1 = linea.find(stringaCercata) + stringaCercata.size();
                     pos2 = linea.find(" €");
                     importoStr = linea.substr(pos1, pos2 - pos1);       // salvo l'importo
-                    importo = stof(importoStr);
+                    transazione->setImporto( stof(importoStr) );
 
                     stringaCercata = "Descrizione: ";                         // cerco la descrizione
                     pos1 = linea.find(stringaCercata) + stringaCercata.size();
-                    descrizione = linea.substr(pos1, linea.size() - pos1);       // salvo la descrizione
+                    transazione->setDescrizione( linea.substr(pos1, linea.size() - pos1) );       // salvo la descrizione
 
                     stringaCercata = "Ingresso - ";           // cerco se è una transazione in ingresso
                     if (linea.find(stringaCercata) != std::string::npos) {
@@ -130,21 +123,17 @@ bool ContoCorrente::caricaDati() {
                             stringaCercata = "Mittente: ";
                             pos1 += stringaCercata.size();
                             pos2 = linea.find(" -", pos1);
-                            mittente = linea.substr(pos1, pos2 - pos1);     // salvo il mittente
-                            transazione = new TransazioneIngresso(descrizione, importo, mittente, data);
-                        } else {                  // se invece è un deposito...
-                            transazione = new TransazioneIngresso(descrizione, importo, "", data);
+                            transazione->setControparte( linea.substr(pos1, pos2 - pos1) );     // salvo il mittente
                         }
+                        transazione->setTipoTransazione( "ingresso" );
                     } else {
                         stringaCercata = "Uscita - Destinatario: ";             // cerco se c'è il destinatario
                         if (linea.find(stringaCercata) != std::string::npos) {
                             pos1 = linea.find(stringaCercata) + stringaCercata.size();
                             pos2 = linea.find(" -", pos1);
-                            destinatario = linea.substr(pos1, pos2 - pos1);     // salvo il destinatario
-                            transazione = new TransazioneUscita(descrizione, importo, destinatario, data);
-                        } else {          // altrimenti è un prelievo
-                            transazione = new TransazioneUscita(descrizione, importo, "", data);
+                            transazione->setControparte( linea.substr(pos1, pos2 - pos1) );     // salvo il destinatario
                         }
+                        transazione->setTipoTransazione( "uscita" );
                     }
                     this->storicoTransazioni.push_back(transazione);
                 }
@@ -166,12 +155,6 @@ bool ContoCorrente::caricaDati() {
     else {
         std::cout << "Impossibile aprire il file: " << this->percorsoFile << std::endl;
         return false;
-    }
-}
-
-ContoCorrente::~ContoCorrente() {
-    for(auto transazione: storicoTransazioni){
-        delete transazione;
     }
 }
 

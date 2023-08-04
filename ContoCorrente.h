@@ -8,6 +8,8 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <memory>
+#include <iomanip>
 
 
 class Transazione;
@@ -17,19 +19,18 @@ class ContoCorrente {
 
 private:
     std::string idUtente {"NULL"}; // togliere
+    std::string id;
     float saldo;
-    std::vector<Transazione*> storicoTransazioni;  // TODO: usare smart-pointer
+    std::vector<std::shared_ptr<Transazione>> storicoTransazioni;
     std::string percorsoFile;
 
 public:
     ContoCorrente() {}
 
-    ContoCorrente(std::string  idUtente, float saldoIniziale=0.0) :
-                    idUtente(std::move(idUtente)), saldo(saldoIniziale) {}
+    ContoCorrente(const std::string &idUtente, std::string id, float saldoIniziale=0.0) :
+                    idUtente(std::move(idUtente)), id(std::move(id)), saldo(saldoIniziale) {}
 
-    ~ContoCorrente();
-
-    bool invia(float importo, ContoCorrente *destinatario, const std::string &descrizione="Invio");
+    bool invia(float importo, std::shared_ptr<ContoCorrente> destinatario, const std::string &descrizione="Invio");
 
     bool preleva(float importo, const std::string &descrizione="Prelievo", const std::string &destinatario="");
 
@@ -41,7 +42,7 @@ public:
 
     bool caricaDati();
 
-    void aggiungiTransazione(Transazione *transazione) {
+    void aggiungiTransazione(std::shared_ptr<Transazione> transazione) {
         storicoTransazioni.push_back(transazione);
     }
 
@@ -58,12 +59,16 @@ public:
         return saldo;
     }
 
-    std::vector<Transazione*> getStoricoTransazioni() const {
+    std::vector<std::shared_ptr<Transazione>> getStoricoTransazioni() const {
         return storicoTransazioni;
     }
 
     const std::string& getPercorsoFile() const {
         return percorsoFile;
+    }
+
+    const std::string &getID() const {
+        return id;
     }
 
     void setPercorsoFile(const std::string &percorsoFile) {

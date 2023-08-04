@@ -7,14 +7,12 @@ std::string Transazione::toString() const {
     std::ostringstream oss;
     oss << data
         << " - Transazione in " << tipoTransazione << " - ";
-    if( tipoTransazione == "Ingresso" ) {
-        if(!mittente.empty()) {
-            oss << "Mittente: " << mittente << " - ";
+    if ( !controparte.empty() ) {
+        if (tipoTransazione == "ingresso") {
+            oss << "Mittente: " << controparte << " - ";
         }
-    }
-    else {
-        if(!destinatario.empty()){
-            oss << "Destinatario: " << destinatario << " - ";
+        else {
+            oss << "Destinatario: " << controparte << " - ";
         }
     }
     oss << "Importo: " << FIXED_FLOAT(importo) << " € - "

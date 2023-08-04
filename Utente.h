@@ -7,20 +7,27 @@
 class Utente {
 
 private:
-    std::string id;
-    std::vector<std::shared_ptr<ContoCorrente>> contiCorrente;  // TODO: aggiungere possibilità di più conti
+    std::string id;   // togliere???
+    std::vector<std::shared_ptr<ContoCorrente>> contiCorrenti;
 
 public:
     Utente(const std::string &id) : id(id) {}
 
-    void addConto(std::shared_ptr<ContoCorrente> conto) {
-        this -> contiCorrente.push_back(conto);
+    void aggiungiConto(std::shared_ptr<ContoCorrente> conto) {
+        this -> contiCorrenti.push_back(conto);
     }
-// TODO: aggiungere possibilità di ricercare un conto per id
-    std::vector<std::shared_ptr<ContoCorrente>> getConti(std::string idConto) {
-        if ( idConto.empty() ) {
-            return contiCorrente;
+
+    std::vector<std::shared_ptr<ContoCorrente>> getConti() {
+        return contiCorrenti;
+    }
+
+    std::shared_ptr<ContoCorrente> getConto(std::string idConto) {
+        for(const auto &conto: contiCorrenti) {
+            if ( conto->getID() == idConto ) {
+                return conto;
+            }
         }
+        return nullptr;
     }
 
     std::string getID() const {

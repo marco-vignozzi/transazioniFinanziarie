@@ -11,13 +11,18 @@ protected:
     std::string data;
     std::string descrizione;
     std::string tipoTransazione;
-    std::string mittente;
-    std::string destinatario;
+    std::string controparte;
 
 public:
-    Transazione(const std::string &descrizione, float importo, const std::string &data="") :
-                    descrizione(descrizione), importo(importo)
+    Transazione() {}
+
+    Transazione(const std::string &descrizione, float importo, const std::string &tipo, const std::string &controparte="",
+                const std::string &data="") :
+                    descrizione(descrizione), importo(importo), tipoTransazione(tipo), controparte(controparte)
     {
+        for (char &c: tipoTransazione) {
+            c = std::tolower(c);
+        }
         if ( data.empty() ) {
             this->data = creaData();
         }
@@ -30,8 +35,6 @@ public:
 
     std::string creaData() const;
 
-    virtual bool esegui(ContoCorrente* conto) = 0;
-
     std::string getDescrizione() const {
         return descrizione;
     }
@@ -43,6 +46,27 @@ public:
     std::string getData() const {
         return data;
     }
+
+    void setImporto(float importo) {
+        Transazione::importo = importo;
+    }
+
+    void setData(const std::string &data) {
+        Transazione::data = data;
+    }
+
+    void setDescrizione(const std::string &descrizione) {
+        Transazione::descrizione = descrizione;
+    }
+
+    void setTipoTransazione(const std::string &tipoTransazione) {
+        Transazione::tipoTransazione = tipoTransazione;
+    }
+
+    void setControparte(const std::string &controparte) {
+        Transazione::controparte = controparte;
+    }
+
 };
 
 

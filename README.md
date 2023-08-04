@@ -17,7 +17,7 @@ contiene tutte le Transazioni effettuate con quel conto.
 
 ### Classe _Utente_
 
-Questa classe definisce un utente, identificato dall'attributo `idUtente`. Con il metodo `addConto` è possibile
+Questa classe definisce un utente, identificato dall'attributo `idUtente`. Con il metodo `aggiungiConto` è possibile
 assegnare un conto corrente all'utente.
 
 ### Classe _ContoContorrente_
