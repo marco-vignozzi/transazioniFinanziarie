@@ -9,8 +9,8 @@ protected:
     void SetUp() override {
         marco = new Utente("Marco");
         giovanni = new Utente("Giovanni");
-        ContoCorrente *contoMarco = new ContoCorrente(marco->getID(), 10.0);
-        ContoCorrente *contoGiovanni = new ContoCorrente(giovanni->getID());
+        std::shared_ptr<ContoCorrente> contoMarco( new ContoCorrente(marco->getID(), "uno", 10.0) );
+        std::shared_ptr<ContoCorrente> contoGiovanni( new ContoCorrente(giovanni->getID(), "uno") );
 
         marco->aggiungiConto(contoMarco);
         giovanni->aggiungiConto(contoGiovanni);
@@ -56,110 +56,97 @@ protected:
 
 
 TEST_F(ContoCorrenteSuite, InvioPositivo) {
-    ASSERT_TRUE(marco -> getContoCorrente().invia(10, &(giovanni -> getContoCorrente())));
+    ASSERT_TRUE( marco -> getConto("uno")->invia(10, giovanni -> getConto("uno")) );
 
-    EXPECT_EQ( marco -> getContoCorrente().getSaldo(), 0 );
-    EXPECT_EQ( giovanni -> getContoCorrente().getSaldo(), 10 );
+    EXPECT_EQ( marco -> getConto("uno")->getSaldo(), 0 );
+    EXPECT_EQ( giovanni -> getConto("uno")->getSaldo(), 10 );
 }
 
 TEST_F(ContoCorrenteSuite, InvioNegativo) {
-    ASSERT_FALSE(marco -> getContoCorrente().invia(-10, &(giovanni -> getContoCorrente())));
+    ASSERT_FALSE( marco -> getConto("uno")->invia(-10, giovanni -> getConto("uno")) );
 
-    EXPECT_EQ( marco -> getContoCorrente().getSaldo(), 10 );
-    EXPECT_EQ( giovanni -> getContoCorrente().getSaldo(), 0 );
+    EXPECT_EQ( marco -> getConto("uno")->getSaldo(), 10 );
+    EXPECT_EQ( giovanni -> getConto("uno")->getSaldo(), 0 );
 }
 
 TEST_F(ContoCorrenteSuite, InvioNullo) {
-    ASSERT_FALSE(marco -> getContoCorrente().invia(0, &(giovanni -> getContoCorrente())));
+    ASSERT_FALSE( marco -> getConto("uno")->invia(0, giovanni -> getConto("uno")) );
 
-    EXPECT_EQ( marco -> getContoCorrente().getSaldo(), 10 );
-    EXPECT_EQ( giovanni -> getContoCorrente().getSaldo(), 0 );
+    EXPECT_EQ( marco -> getConto("uno")->getSaldo(), 10 );
+    EXPECT_EQ( giovanni -> getConto("uno")->getSaldo(), 0 );
 }
 
 TEST_F(ContoCorrenteSuite, InvioFondiInsufficienti) {
-    ASSERT_FALSE(marco -> getContoCorrente().invia(10.1, &(giovanni -> getContoCorrente())));
+    ASSERT_FALSE(marco -> getConto("uno")->invia(10.1, giovanni -> getConto("uno")));
 
-    EXPECT_EQ( marco -> getContoCorrente().getSaldo(), 10 );
-    EXPECT_EQ( giovanni -> getContoCorrente().getSaldo(), 0 );
+    EXPECT_EQ( marco -> getConto("uno")->getSaldo(), 10 );
+    EXPECT_EQ( giovanni -> getConto("uno")->getSaldo(), 0 );
 }
 
 TEST_F(ContoCorrenteSuite, NumeroTransazioniInvio) {
-    ASSERT_EQ( giovanni -> getContoCorrente().getStoricoTransazioni().size(), 0);
-    ASSERT_EQ( marco -> getContoCorrente().getStoricoTransazioni().size(), 0);
+    ASSERT_EQ( giovanni -> getConto("uno")->getStoricoTransazioni().size(), 0);
+    ASSERT_EQ( marco -> getConto("uno")->getStoricoTransazioni().size(), 0);
 
-    ASSERT_TRUE(marco -> getContoCorrente().invia(1, &(giovanni -> getContoCorrente())));
-    ASSERT_TRUE(marco -> getContoCorrente().invia(1, &(giovanni -> getContoCorrente())));
-    ASSERT_FALSE(marco -> getContoCorrente().invia(0, &(giovanni -> getContoCorrente())));
-    ASSERT_FALSE(marco -> getContoCorrente().invia(-1, &(giovanni -> getContoCorrente())));
+    ASSERT_TRUE(marco -> getConto("uno")->invia(1, giovanni -> getConto("uno")));
+    ASSERT_TRUE(marco -> getConto("uno")->invia(1, giovanni -> getConto("uno")));
+    ASSERT_FALSE(marco -> getConto("uno")->invia(0, giovanni -> getConto("uno")));
+    ASSERT_FALSE(marco -> getConto("uno")->invia(-1, giovanni -> getConto("uno")));
 
-    EXPECT_EQ( giovanni -> getContoCorrente().getStoricoTransazioni().size(), 2);
-    EXPECT_EQ( marco -> getContoCorrente().getStoricoTransazioni().size(), 2);
+    EXPECT_EQ( giovanni -> getConto("uno")->getStoricoTransazioni().size(), 2);
+    EXPECT_EQ( marco -> getConto("uno")->getStoricoTransazioni().size(), 2);
 }
 
 TEST_F(ContoCorrenteSuite, NumeroTransazioniPrelievo) {
-    ASSERT_EQ( marco -> getContoCorrente().getStoricoTransazioni().size(), 0);
+    ASSERT_EQ( marco -> getConto("uno")->getStoricoTransazioni().size(), 0);
 
-    ASSERT_TRUE(marco -> getContoCorrente().preleva(1));
-    ASSERT_TRUE(marco -> getContoCorrente().preleva(1));
-    ASSERT_FALSE(marco -> getContoCorrente().preleva(0));
-    ASSERT_FALSE(marco -> getContoCorrente().preleva(-1));
+    ASSERT_TRUE(marco -> getConto("uno")->preleva(1));
+    ASSERT_TRUE(marco -> getConto("uno")->preleva(1));
+    ASSERT_FALSE(marco -> getConto("uno")->preleva(0));
+    ASSERT_FALSE(marco -> getConto("uno")->preleva(-1));
 
-    EXPECT_EQ( marco -> getContoCorrente().getStoricoTransazioni().size(), 2);
+    EXPECT_EQ( marco -> getConto("uno")->getStoricoTransazioni().size(), 2);
 }
 
 TEST_F(ContoCorrenteSuite, NumeroTransazioniDeposito) {
-    ASSERT_EQ( marco -> getContoCorrente().getStoricoTransazioni().size(), 0);
+    ASSERT_EQ( marco -> getConto("uno")->getStoricoTransazioni().size(), 0);
 
-    ASSERT_TRUE(marco -> getContoCorrente().deposita(1));
-    ASSERT_TRUE(marco -> getContoCorrente().deposita(1));
-    ASSERT_FALSE(marco -> getContoCorrente().deposita(0));
-    ASSERT_FALSE(marco -> getContoCorrente().deposita(-1));
+    ASSERT_TRUE(marco -> getConto("uno")->deposita(1));
+    ASSERT_TRUE(marco -> getConto("uno")->deposita(1));
+    ASSERT_FALSE(marco -> getConto("uno")->deposita(0));
+    ASSERT_FALSE(marco -> getConto("uno")->deposita(-1));
 
-    EXPECT_EQ( marco -> getContoCorrente().getStoricoTransazioni().size(), 2);
+    EXPECT_EQ( marco -> getConto("uno")->getStoricoTransazioni().size(), 2);
 }
 
-TEST_F(ContoCorrenteSuite, CopiaContoCorrente) {
-    ASSERT_EQ( marco -> getContoCorrente().getStoricoTransazioni().size(), 0);
-    ASSERT_EQ( marco -> getContoCorrente().getSaldo(), 10 );
-    ASSERT_EQ( giovanni -> getContoCorrente().getStoricoTransazioni().size(), 0);
-    ASSERT_EQ( giovanni -> getContoCorrente().getSaldo(), 0 );
-
-    ASSERT_TRUE(marco -> getContoCorrente().preleva(1));
-    giovanni->aggiungiConto(&(marco->getContoCorrente()));
-
-    EXPECT_EQ( giovanni -> getContoCorrente().getStoricoTransazioni().size(), 1);
-    EXPECT_EQ( giovanni -> getContoCorrente().getSaldo(), 9 );
-}
 
 // Questo test verifica che il caricamento da file dei dati di un conto corrente funzioni correttamente.
 // Per farlo carica i dati dal percorso file "test/docs/contoMarco.txt" nel conto dell'utente "marco" e
 // li salva nel nuovo percorso "test/docs/nuovaCopiaContoMarco.txt", per poi controllare l'uguaglianza dei due file.
-
 TEST_F(ContoCorrenteSuite, CaricaDatiContoVuoto) {
-    ASSERT_EQ(marco->getContoCorrente().getStoricoTransazioni().size(), 0);
-    std::string percorsoFile = "../../test/docs/contoMarco.txt";
+    ASSERT_EQ(marco->getConto("uno")->getStoricoTransazioni().size(), 0);
+    std::string percorsoFile = "../../test/docs/contoMarco1.txt";
     std::string nuovoPercorso = "../../test/docs/nuovaCopiaContoMarco.txt";
 
-    marco->getContoCorrente().setPercorsoFile(percorsoFile);
-    ASSERT_TRUE(marco->getContoCorrente().caricaDati());
-    marco->getContoCorrente().setPercorsoFile(nuovoPercorso);
-    ASSERT_TRUE(marco->getContoCorrente().salvaDati());
+    marco->getConto("uno")->setPercorsoFile(percorsoFile);
+    ASSERT_TRUE(marco->getConto("uno")->caricaDati());
+    marco->getConto("uno")->setPercorsoFile(nuovoPercorso);
+    ASSERT_TRUE(marco->getConto("uno")->salvaDati());
 
     EXPECT_TRUE(confrontaContenutoFile(percorsoFile, nuovoPercorso));
 }
 
 // in questo test ci si aspetta che i dati del conto vengano sovrascritti con quelli caricati da file.
 TEST_F(ContoCorrenteSuite, CaricaDatiContoNonVuoto) {
-    ASSERT_EQ(marco->getContoCorrente().getStoricoTransazioni().size(), 0);
-    ASSERT_TRUE(marco->getContoCorrente().deposita(10));
-    ASSERT_EQ(marco->getContoCorrente().getStoricoTransazioni().size(), 1);
-    std::string percorsoFile = "../../test/docs/contoMarco.txt";
+    ASSERT_EQ(marco->getConto("uno")->getStoricoTransazioni().size(), 0);
+    ASSERT_TRUE(marco->getConto("uno")->deposita(10));
+    ASSERT_EQ(marco->getConto("uno")->getStoricoTransazioni().size(), 1);
+    std::string percorsoFile = "../../test/docs/contoMarco1.txt";
     std::string nuovoPercorso = "../../test/docs/nuovaCopiaContoMarco.txt";
 
-    marco->getContoCorrente().setPercorsoFile(percorsoFile);
-    ASSERT_TRUE(marco->getContoCorrente().caricaDati());
-    marco->getContoCorrente().setPercorsoFile(nuovoPercorso);
-    ASSERT_TRUE(marco->getContoCorrente().salvaDati());
+    marco->getConto("uno")->setPercorsoFile(percorsoFile);
+    ASSERT_TRUE(marco->getConto("uno")->caricaDati());
+    marco->getConto("uno")->setPercorsoFile(nuovoPercorso);
+    ASSERT_TRUE(marco->getConto("uno")->salvaDati());
 
     EXPECT_TRUE(confrontaContenutoFile(percorsoFile, nuovoPercorso));
 }

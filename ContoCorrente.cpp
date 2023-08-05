@@ -12,7 +12,7 @@ bool ContoCorrente::invia(float importo, std::shared_ptr<ContoCorrente> destinat
         return false;
     }
     if ( preleva(importo, descrizione, destinatario->getIDUtente()) ) {
-        deposita(importo, descrizione, destinatario->getIDUtente());
+        destinatario->deposita(importo, descrizione, destinatario->getIDUtente());
         return true;
     }
     return false;
@@ -60,8 +60,8 @@ std::string ContoCorrente::getStoricoToString() const {
     return oss.str();
 }
 
-// TODO aggiungere ricerca, modifica e cancellazione delle transazioni. ricerca restituisce vettore o lista.
-
+// TODO: aggiungere ricerca, modifica e cancellazione delle transazioni. ricerca restituisce vettore o lista.
+// TODO: aggiungere id del conto nel file
 // Questo metodo permette di salvare i dati di un conto corrente (saldo e storico transazioni) in un file ".txt".
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::salvaDati() const {
@@ -116,7 +116,7 @@ bool ContoCorrente::caricaDati() {
                     pos1 = linea.find(stringaCercata) + stringaCercata.size();
                     transazione->setDescrizione( linea.substr(pos1, linea.size() - pos1) );       // salvo la descrizione
 
-                    stringaCercata = "Ingresso - ";           // cerco se è una transazione in ingresso
+                    stringaCercata = "ingresso - ";           // cerco se è una transazione in ingresso
                     if (linea.find(stringaCercata) != std::string::npos) {
                         pos1 = linea.find(stringaCercata) + stringaCercata.size();
                         if (linea[pos1] == 'M') {                 // vedo se c'è un mittente (altrimenti è un deposito)
@@ -127,7 +127,7 @@ bool ContoCorrente::caricaDati() {
                         }
                         transazione->setTipoTransazione( "ingresso" );
                     } else {
-                        stringaCercata = "Uscita - Destinatario: ";             // cerco se c'è il destinatario
+                        stringaCercata = "uscita - Destinatario: ";             // cerco se c'è il destinatario
                         if (linea.find(stringaCercata) != std::string::npos) {
                             pos1 = linea.find(stringaCercata) + stringaCercata.size();
                             pos2 = linea.find(" -", pos1);

@@ -13,7 +13,7 @@ int main() {
     marco->aggiungiConto(contoMarco1);
     giovanni->aggiungiConto(contoGiovanni);
     gemma->aggiungiConto(contoGemma);
-    marco->getConto("uno")->setPercorsoFile("../test/docs/contoMarco1.txt");
+    marco->getConto("uno")->setPercorsoFile("../docs/contoMarco1.txt");
     giovanni->getConto("uno")->setPercorsoFile("../docs/contoGiovanni.txt");
     gemma->getConto("uno")->setPercorsoFile("../docs/contoGemma.txt");
 
