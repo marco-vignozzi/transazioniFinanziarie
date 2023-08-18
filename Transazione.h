@@ -42,8 +42,16 @@ public:
         return importo;
     }
 
-    std::string getData() const {
+    const std::string &getData() const {
         return data;
+    }
+
+    const std::string &getTipoTransazione() const {
+        return tipoTransazione;
+    }
+
+    const std::string &getControparte() const {
+        return controparte;
     }
 
     void setImporto(float importo) {

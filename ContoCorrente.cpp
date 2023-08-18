@@ -158,8 +158,23 @@ bool ContoCorrente::caricaDati() {
     }
 }
 
-std::vector<Transazione> ContoCorrente::cercaTransazioni() {
-    return std::vector<Transazione>();
+ContoCorrente &ContoCorrente::cercaTransazioni(std::string tipo) const {
+    ContoCorrente nuovoconto = ContoCorrente();
+    for( const auto &transazione : storicoTransazioni ) {
+        if ( transazione->getTipoTransazione() == tipo )
+            nuovoconto.getStoricoTransazioni().push_back(transazione);
+    }
+    return nuovoconto;
 }
+
+ContoCorrente &ContoCorrente::cercaTransazioni(float importoMax, float importoMin) const {
+    ContoCorrente nuovoconto = ContoCorrente();
+    for( const auto &transazione : storicoTransazioni ) {
+        if ( transazione->getImporto() <= importoMax && transazione->getImporto() >= importoMin ) {
+            nuovoconto.getStoricoTransazioni().push_back(transazione);
+    }
+    return nuovoconto;
+}
+
 
 // money pro

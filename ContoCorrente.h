@@ -25,6 +25,7 @@ private:
     std::string percorsoFile;
 
 public:
+    ContoCorrente() {}
     ContoCorrente(const std::string &idUtente, std::string id, float saldoIniziale=0.0) :
                     idUtente(std::move(idUtente)), id(std::move(id)), saldo(saldoIniziale) {}
 
@@ -40,9 +41,13 @@ public:
 
     bool caricaDati();
 
-    // ContoCorrente cercaTransazioni();
+    ContoCorrente &cercaTransazioni(std::string tipo) const;
 
-    std::vector<Transazione> cercaTransazioni(std::string tipo);
+    ContoCorrente &cercaTransazioni(float importoMax, float importoMin=0) const;
+
+//    ContoCorrente &cercaTransazioni(std::string dataMin, std::string dataMax) const;
+
+//    std::vector<Transazione> cercaTransazioni(std::string tipo);
 
     void aggiungiTransazione(std::shared_ptr<Transazione> transazione) {
         storicoTransazioni.push_back(transazione);
