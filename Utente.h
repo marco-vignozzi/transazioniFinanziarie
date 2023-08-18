@@ -7,7 +7,7 @@
 class Utente {
 
 private:
-    std::string id;   // togliere???
+    std::string id;
     std::vector<std::shared_ptr<ContoCorrente>> contiCorrenti;
 
 public:

@@ -120,7 +120,7 @@ TEST_F(ContoCorrenteSuite, NumeroTransazioniDeposito) {
 
 
 // Questo test verifica che il caricamento da file dei dati di un conto corrente funzioni correttamente.
-// Per farlo carica i dati dal percorso file "test/docs/contoMarco.txt" nel conto dell'utente "marco" e
+// Per farlo carica i dati dal percorso file "test/docs/contoMarco1.txt" nel conto dell'utente "marco" e
 // li salva nel nuovo percorso "test/docs/nuovaCopiaContoMarco.txt", per poi controllare l'uguaglianza dei due file.
 TEST_F(ContoCorrenteSuite, CaricaDatiContoVuoto) {
     ASSERT_EQ(marco->getConto("uno")->getStoricoTransazioni().size(), 0);
@@ -135,7 +135,7 @@ TEST_F(ContoCorrenteSuite, CaricaDatiContoVuoto) {
     EXPECT_TRUE(confrontaContenutoFile(percorsoFile, nuovoPercorso));
 }
 
-// in questo test ci si aspetta che i dati del conto vengano sovrascritti con quelli caricati da file.
+// In questo test ci si aspetta che i dati del conto vengano sovrascritti con quelli caricati da file.
 TEST_F(ContoCorrenteSuite, CaricaDatiContoNonVuoto) {
     ASSERT_EQ(marco->getConto("uno")->getStoricoTransazioni().size(), 0);
     ASSERT_TRUE(marco->getConto("uno")->deposita(10));

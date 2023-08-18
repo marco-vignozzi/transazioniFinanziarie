@@ -3,10 +3,9 @@
 
 #include "ContoCorrente.h"
 
-
 class Transazione {
 
-protected:
+private:
     float importo;
     std::string data;
     std::string descrizione;
@@ -18,8 +17,8 @@ public:
 
     Transazione(const std::string &descrizione, float importo, const std::string &tipo, const std::string &controparte="",
                 const std::string &data="") :
-                    descrizione(descrizione), importo(importo), tipoTransazione(tipo), controparte(controparte)
-    {
+                    descrizione(descrizione), importo(importo), tipoTransazione(tipo), controparte(controparte) {
+
         for (char &c: tipoTransazione) {
             c = std::tolower(c);
         }

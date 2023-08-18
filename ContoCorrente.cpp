@@ -17,7 +17,6 @@ bool ContoCorrente::invia(float importo, std::shared_ptr<ContoCorrente> destinat
     }
     return false;
 }
-// TODO: gestire logica transazioni direttamente nel conto
 
 // Questo metodo aggiunge fondi al conto corrente e salva la relativa transazione in ingresso.
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
@@ -61,12 +60,12 @@ std::string ContoCorrente::getStoricoToString() const {
 }
 
 // TODO: aggiungere ricerca, modifica e cancellazione delle transazioni. ricerca restituisce vettore o lista.
-// TODO: aggiungere id del conto nel file
 // Questo metodo permette di salvare i dati di un conto corrente (saldo e storico transazioni) in un file ".txt".
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::salvaDati() const {
     std::ofstream file(percorsoFile);
     if ( file.is_open() ) {
+        file << "Storico Transazioni Conto " << this->id << std::endl;
         file << getStoricoToString() << std::endl;
         file << "Saldo disponibile: " << FIXED_FLOAT(getSaldo()) << " €" << std::endl << std::endl;
         file.close();
@@ -97,6 +96,7 @@ bool ContoCorrente::caricaDati() {
         //svuoto il vettore delle transazioni
         this->storicoTransazioni.clear();
         std::string linea;
+        getline(file, linea);
         while ( getline(file, linea) ) {
             if ( !linea.empty() ) {
                 if ( linea.find(" -") != std::string::npos ) {
@@ -156,6 +156,10 @@ bool ContoCorrente::caricaDati() {
         std::cout << "Impossibile aprire il file: " << this->percorsoFile << std::endl;
         return false;
     }
+}
+
+std::vector<Transazione> ContoCorrente::cercaTransazioni() {
+    return std::vector<Transazione>();
 }
 
 // money pro

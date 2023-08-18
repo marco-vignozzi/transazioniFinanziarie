@@ -40,6 +40,10 @@ public:
 
     bool caricaDati();
 
+    // ContoCorrente cercaTransazioni();
+
+    std::vector<Transazione> cercaTransazioni(std::string tipo);
+
     void aggiungiTransazione(std::shared_ptr<Transazione> transazione) {
         storicoTransazioni.push_back(transazione);
     }
