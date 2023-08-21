@@ -10,6 +10,7 @@
 #include <sstream>
 #include <memory>
 #include <iomanip>
+#include "Data.h"
 
 
 class Transazione;
@@ -41,11 +42,17 @@ public:
 
     bool caricaDati();
 
-    ContoCorrente &cercaTransazioni(std::string tipo) const;
-
     ContoCorrente &cercaTransazioni(float importoMax, float importoMin=0) const;
 
-//    ContoCorrente &cercaTransazioni(std::string dataMin, std::string dataMax) const;
+    ContoCorrente &cercaTransazioni(Data dataMax, Data dataMin) const;
+
+    ContoCorrente &cercaTransazioni(std::string parolaCercata, std::string tipoRicerca="tipo") const;
+
+    ContoCorrente &ricercaTipoTrans(std::string tipoTrans) const;
+
+    ContoCorrente &ricercaControparte(std::string controparte) const;
+
+    ContoCorrente &ricercaDescrizione(std::string descrizione) const;
 
 //    std::vector<Transazione> cercaTransazioni(std::string tipo);
 

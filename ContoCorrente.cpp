@@ -158,20 +158,68 @@ bool ContoCorrente::caricaDati() {
     }
 }
 
-ContoCorrente &ContoCorrente::cercaTransazioni(std::string tipo) const {
+ContoCorrente &ContoCorrente::cercaTransazioni(float importoMax, float importoMin) const {
     ContoCorrente nuovoconto = ContoCorrente();
     for( const auto &transazione : storicoTransazioni ) {
-        if ( transazione->getTipoTransazione() == tipo )
+        if (transazione->getImporto() <= importoMax && transazione->getImporto() >= importoMin) {
+            nuovoconto.getStoricoTransazioni().push_back(transazione);
+        }
+    }
+    return nuovoconto;
+}
+
+ContoCorrente &ContoCorrente::cercaTransazioni(Data dataMax, Data dataMin) const {
+    ContoCorrente nuovoconto = ContoCorrente();
+    for( const auto &transazione : storicoTransazioni ) {
+        if ( transazione->getData() < *(new Data(dataMax)) &&
+                                        transazione->getData() > *(new Data(dataMin)) ) {
+            nuovoconto.getStoricoTransazioni().push_back(transazione);
+        }
+    }
+    return nuovoconto;
+}
+
+ContoCorrente &ContoCorrente::cercaTransazioni(std::string parolaCercata, std::string tipoRicerca) const {
+    if(tipoRicerca == "tipo") {
+        return ricercaTipoTrans(parolaCercata);
+    }
+    else if(tipoRicerca == "controparte") {
+        return ricercaControparte(parolaCercata);
+    }
+    else if(tipoRicerca == "descrizione") {
+        return ricercaDescrizione(parolaCercata);
+    }
+    else {
+        std::cout << "Tipo di ricerca non disponibile." << std::endl;
+        std::cout << "Tipi di ricerca possibili: 'tipo', 'controparte' e 'descrizione'." << std::endl;
+    }
+}
+
+ContoCorrente &ContoCorrente::ricercaTipoTrans(std::string tipoTrans) const {
+    ContoCorrente nuovoconto = ContoCorrente();
+    for( const auto &transazione : storicoTransazioni ) {
+        if ( transazione->getTipoTransazione() == tipoTrans )
             nuovoconto.getStoricoTransazioni().push_back(transazione);
     }
     return nuovoconto;
 }
 
-ContoCorrente &ContoCorrente::cercaTransazioni(float importoMax, float importoMin) const {
+ContoCorrente &ContoCorrente::ricercaControparte(std::string controparte) const {
     ContoCorrente nuovoconto = ContoCorrente();
     for( const auto &transazione : storicoTransazioni ) {
-        if ( transazione->getImporto() <= importoMax && transazione->getImporto() >= importoMin ) {
+        if ( transazione->getControparte() == controparte ) {
             nuovoconto.getStoricoTransazioni().push_back(transazione);
+        }
+    }
+    return nuovoconto;
+}
+
+ContoCorrente &ContoCorrente::ricercaDescrizione(std::string descrizione) const {
+    ContoCorrente nuovoconto = ContoCorrente();
+    for( const auto &transazione : storicoTransazioni ) {
+        if ( transazione->getDescrizione().find(descrizione) != std::string::npos ) {
+            nuovoconto.getStoricoTransazioni().push_back(transazione);
+            }
     }
     return nuovoconto;
 }

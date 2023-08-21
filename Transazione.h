@@ -3,11 +3,12 @@
 
 #include "ContoCorrente.h"
 
+
 class Transazione {
 
 private:
     float importo;
-    std::string data;
+    Data data;
     std::string descrizione;
     std::string tipoTransazione;
     std::string controparte;
@@ -23,16 +24,14 @@ public:
             c = std::tolower(c);
         }
         if ( data.empty() ) {
-            this->data = creaData();
+            this->data = *(new Data());
         }
         else {
-            this->data = data;
+            this->data = *(new Data(data));
         }
     }
 
     std::string toString() const;
-
-    std::string creaData() const;
 
     std::string getDescrizione() const {
         return descrizione;
@@ -42,7 +41,7 @@ public:
         return importo;
     }
 
-    const std::string &getData() const {
+    const Data &getData() const {
         return data;
     }
 
@@ -59,7 +58,7 @@ public:
     }
 
     void setData(const std::string &data) {
-        Transazione::data = data;
+        Transazione::data = *(new Data(data));
     }
 
     void setDescrizione(const std::string &descrizione) {
