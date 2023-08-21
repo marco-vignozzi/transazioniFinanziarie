@@ -159,7 +159,7 @@ bool ContoCorrente::caricaDati() {
 }
 
 ContoCorrente &ContoCorrente::cercaTransazioni(float importoMax, float importoMin) const {
-    ContoCorrente nuovoconto = ContoCorrente();
+    ContoCorrente &nuovoconto = *new ContoCorrente();
     for( const auto &transazione : storicoTransazioni ) {
         if (transazione->getImporto() <= importoMax && transazione->getImporto() >= importoMin) {
             nuovoconto.getStoricoTransazioni().push_back(transazione);
@@ -169,7 +169,7 @@ ContoCorrente &ContoCorrente::cercaTransazioni(float importoMax, float importoMi
 }
 
 ContoCorrente &ContoCorrente::cercaTransazioni(Data dataMax, Data dataMin) const {
-    ContoCorrente nuovoconto = ContoCorrente();
+    ContoCorrente &nuovoconto = *new ContoCorrente();
     for( const auto &transazione : storicoTransazioni ) {
         if ( transazione->getData() < *(new Data(dataMax)) &&
                                         transazione->getData() > *(new Data(dataMin)) ) {
@@ -192,11 +192,12 @@ ContoCorrente &ContoCorrente::cercaTransazioni(std::string parolaCercata, std::s
     else {
         std::cout << "Tipo di ricerca non disponibile." << std::endl;
         std::cout << "Tipi di ricerca possibili: 'tipo', 'controparte' e 'descrizione'." << std::endl;
+        return *new ContoCorrente();
     }
 }
 
 ContoCorrente &ContoCorrente::ricercaTipoTrans(std::string tipoTrans) const {
-    ContoCorrente nuovoconto = ContoCorrente();
+    ContoCorrente &nuovoconto = *new ContoCorrente();
     for( const auto &transazione : storicoTransazioni ) {
         if ( transazione->getTipoTransazione() == tipoTrans )
             nuovoconto.getStoricoTransazioni().push_back(transazione);
@@ -205,7 +206,7 @@ ContoCorrente &ContoCorrente::ricercaTipoTrans(std::string tipoTrans) const {
 }
 
 ContoCorrente &ContoCorrente::ricercaControparte(std::string controparte) const {
-    ContoCorrente nuovoconto = ContoCorrente();
+    ContoCorrente &nuovoconto = *new ContoCorrente();
     for( const auto &transazione : storicoTransazioni ) {
         if ( transazione->getControparte() == controparte ) {
             nuovoconto.getStoricoTransazioni().push_back(transazione);
@@ -215,13 +216,23 @@ ContoCorrente &ContoCorrente::ricercaControparte(std::string controparte) const 
 }
 
 ContoCorrente &ContoCorrente::ricercaDescrizione(std::string descrizione) const {
-    ContoCorrente nuovoconto = ContoCorrente();
+    ContoCorrente &nuovoconto = *new ContoCorrente();
     for( const auto &transazione : storicoTransazioni ) {
         if ( transazione->getDescrizione().find(descrizione) != std::string::npos ) {
             nuovoconto.getStoricoTransazioni().push_back(transazione);
             }
     }
     return nuovoconto;
+}
+
+bool ContoCorrente::eliminaTransazione(std::shared_ptr<Transazione> transazione) {
+    for( auto it = storicoTransazioni.begin(); it != storicoTransazioni.end(); ++it ) {
+        if (**it == *transazione) {
+            storicoTransazioni.erase(it);
+            return true;
+        }
+    }
+    return false;
 }
 
 

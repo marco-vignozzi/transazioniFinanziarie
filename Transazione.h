@@ -33,6 +33,10 @@ public:
 
     std::string toString() const;
 
+    void modifica(std::string campo, std::string nuovaStringa);
+
+    bool operator==(const Transazione& other) const;
+
     std::string getDescrizione() const {
         return descrizione;
     }
