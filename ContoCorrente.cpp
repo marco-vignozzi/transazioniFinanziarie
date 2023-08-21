@@ -27,7 +27,7 @@ bool ContoCorrente::deposita(float importo, const std::string &descrizione, cons
     }
     std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>(descrizione, importo, "ingresso", mittente);
     saldo += importo;
-    aggiungiTransazione(transazione);
+    storicoTransazioni.push_back(transazione);
     return true;
 }
 
@@ -41,7 +41,7 @@ bool ContoCorrente::preleva(float importo, const std::string &descrizione, const
     if ( verificaDisponibilità(importo) ) {
         std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>(descrizione, importo, "uscita", destinatario);
         saldo -= importo;
-        aggiungiTransazione(transazione);
+        storicoTransazioni.push_back(transazione);
         return true;
     }
     else {

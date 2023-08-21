@@ -59,10 +59,6 @@ public:
 
 //    std::vector<Transazione> cercaTransazioni(std::string tipo);
 
-    void aggiungiTransazione(std::shared_ptr<Transazione> transazione) {
-        storicoTransazioni.push_back(transazione);
-    }
-
     bool verificaDisponibilità(float importo) const {
         if(importo <= saldo) { return true; }
         else { return false; }
