@@ -23,30 +23,17 @@ public:
         secondo = data.tm_sec;
     }
 
-    Data(const std::string& dataStr) {
-        std::istringstream ss(dataStr);
-        ss >> anno;
-        ss.ignore();
-        ss >> mese;
-        ss.ignore();
-        ss >> giorno;
-        ss.ignore();
-        ss >> ora;
-        ss.ignore();
-        ss >> minuto;
-        ss.ignore();
-        ss >> secondo;
-    }
+    Data(const std::string& dataStr);
 
     std::string toString() const;
+
+    bool operator==(const Data& other) const;
 
     bool operator>(const Data& other) const;
 
     bool operator<(const Data& other) const {
         return !(*this > other) && !(*this == other);
     }
-
-    bool operator==(const Data& other) const;
 };
 
 

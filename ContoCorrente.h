@@ -42,9 +42,9 @@ public:
 
     bool caricaDati();
 
-    ContoCorrente &cercaTransazioni(float importoMax, float importoMin=0) const;
+    ContoCorrente &cercaTransazioni(float importoMax, float importoMin=0.0) const;
 
-    ContoCorrente &cercaTransazioni(Data dataMax, Data dataMin) const;
+    ContoCorrente &cercaTransazioni(Data dataMax, Data dataMin=*(new Data("1900-01-01 00:00:00"))) const;
 
     ContoCorrente &cercaTransazioni(std::string parolaCercata, std::string tipoRicerca="tipo") const;
 

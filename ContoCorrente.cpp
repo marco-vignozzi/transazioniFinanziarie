@@ -25,7 +25,7 @@ bool ContoCorrente::deposita(float importo, const std::string &descrizione, cons
         std::cout << "Impossibile depositare quantità negative o nulle di denaro." << std::endl;
         return false;
     }
-    std::shared_ptr<Transazione> transazione( new Transazione(descrizione, importo, "ingresso", mittente) );
+    std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>(descrizione, importo, "ingresso", mittente);
     saldo += importo;
     aggiungiTransazione(transazione);
     return true;
@@ -39,7 +39,7 @@ bool ContoCorrente::preleva(float importo, const std::string &descrizione, const
         return false;
     }
     if ( verificaDisponibilità(importo) ) {
-        std::shared_ptr<Transazione> transazione( new Transazione(descrizione, importo, "uscita", destinatario) );
+        std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>(descrizione, importo, "uscita", destinatario);
         saldo -= importo;
         aggiungiTransazione(transazione);
         return true;
@@ -59,7 +59,7 @@ std::string ContoCorrente::getStoricoToString() const {
     return oss.str();
 }
 
-// TODO: aggiungere ricerca, modifica e cancellazione delle transazioni. ricerca restituisce vettore o lista.
+// TODO: aggiungere modifica e cancellazione delle transazioni.
 // Questo metodo permette di salvare i dati di un conto corrente (saldo e storico transazioni) in un file ".txt".
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::salvaDati() const {
@@ -100,7 +100,7 @@ bool ContoCorrente::caricaDati() {
         while ( getline(file, linea) ) {
             if ( !linea.empty() ) {
                 if ( linea.find(" -") != std::string::npos ) {
-                    std::shared_ptr<Transazione> transazione( new Transazione());
+                    std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>();
 
                     pos1 = linea.find(" -");                 // cerco la fine della data
                     transazione->setData( linea.substr(0, pos1) );           // salvo la data

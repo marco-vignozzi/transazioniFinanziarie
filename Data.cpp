@@ -1,5 +1,21 @@
 #include "Data.h"
 
+
+Data::Data(const std::string &dataStr) {
+    std::istringstream ss(dataStr);
+    ss >> anno;
+    ss.ignore();
+    ss >> mese;
+    ss.ignore();
+    ss >> giorno;
+    ss.ignore();
+    ss >> ora;
+    ss.ignore();
+    ss >> minuto;
+    ss.ignore();
+    ss >> secondo;
+}
+
 bool Data::operator>(const Data &other) const {
     if (anno > other.anno)
         return true;
