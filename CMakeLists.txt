@@ -7,7 +7,9 @@ add_subdirectory(test)
 
 set(SOURCE_FILES main.cpp Transazione.h ContoCorrente.h Utente.h ContoCorrente.cpp Transazione.cpp
         Data.cpp
-        Data.h)
+        Data.h
+        StoricoTransazioni.cpp
+        StoricoTransazioni.h)
 add_executable(transazioniFinanziarie main.cpp)
 add_library(core ${SOURCE_FILES})
 target_link_libraries(transazioniFinanziarie core)

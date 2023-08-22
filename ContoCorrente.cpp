@@ -1,6 +1,4 @@
-#include <fstream>
 #include "ContoCorrente.h"
-#include "Transazione.h"
 
 // Questo metodo esegue lo scambio di fondi tra due conti. Lo scambio è effettuato eseguendo un prelievo (se possibile)
 // dal conto chiamante seguito da un deposito sul conto "destinatario", passato come parametro.
@@ -27,7 +25,7 @@ bool ContoCorrente::deposita(float importo, const std::string &descrizione, cons
     }
     std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>(descrizione, importo, "ingresso", mittente);
     saldo += importo;
-    storicoTransazioni.push_back(transazione);
+    storico.aggiungiTransazione(transazione);
     return true;
 }
 
@@ -41,7 +39,7 @@ bool ContoCorrente::preleva(float importo, const std::string &descrizione, const
     if ( verificaDisponibilità(importo) ) {
         std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>(descrizione, importo, "uscita", destinatario);
         saldo -= importo;
-        storicoTransazioni.push_back(transazione);
+        storico.aggiungiTransazione(transazione);
         return true;
     }
     else {
@@ -51,22 +49,13 @@ bool ContoCorrente::preleva(float importo, const std::string &descrizione, const
     }
 }
 
-std::string ContoCorrente::getStoricoToString() const {
-    std::ostringstream oss;
-    for(const auto &transazione : storicoTransazioni) {
-        oss << transazione->toString();
-    }
-    return oss.str();
-}
-
-// TODO: aggiungere modifica e cancellazione delle transazioni.
 // Questo metodo permette di salvare i dati di un conto corrente (saldo e storico transazioni) in un file ".txt".
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
 bool ContoCorrente::salvaDati() const {
     std::ofstream file(percorsoFile);
     if ( file.is_open() ) {
         file << "Storico Transazioni Conto " << this->id << std::endl;
-        file << getStoricoToString() << std::endl;
+        file << storico.toString() << std::endl;
         file << "Saldo disponibile: " << FIXED_FLOAT(getSaldo()) << " €" << std::endl << std::endl;
         file.close();
         std::cout << "Storico transazioni salvato nel file: " << percorsoFile << std::endl;
@@ -94,7 +83,7 @@ bool ContoCorrente::caricaDati() {
 
     if ( file.is_open() ) {
         //svuoto il vettore delle transazioni
-        this->storicoTransazioni.clear();
+        this->storico.getTransazioni().clear();
         std::string linea;
         getline(file, linea);
         while ( getline(file, linea) ) {
@@ -135,7 +124,7 @@ bool ContoCorrente::caricaDati() {
                         }
                         transazione->setTipoTransazione( "uscita" );
                     }
-                    this->storicoTransazioni.push_back(transazione);
+                    this->storico.aggiungiTransazione(transazione);
                 }
                 else {
                     stringaCercata = ": ";
@@ -157,83 +146,3 @@ bool ContoCorrente::caricaDati() {
         return false;
     }
 }
-
-ContoCorrente &ContoCorrente::cercaTransazioni(float importoMax, float importoMin) const {
-    ContoCorrente &nuovoconto = *new ContoCorrente();
-    for( const auto &transazione : storicoTransazioni ) {
-        if (transazione->getImporto() <= importoMax && transazione->getImporto() >= importoMin) {
-            nuovoconto.getStoricoTransazioni().push_back(transazione);
-        }
-    }
-    return nuovoconto;
-}
-
-ContoCorrente &ContoCorrente::cercaTransazioni(Data dataMax, Data dataMin) const {
-    ContoCorrente &nuovoconto = *new ContoCorrente();
-    for( const auto &transazione : storicoTransazioni ) {
-        if ( transazione->getData() < *(new Data(dataMax)) &&
-                                        transazione->getData() > *(new Data(dataMin)) ) {
-            nuovoconto.getStoricoTransazioni().push_back(transazione);
-        }
-    }
-    return nuovoconto;
-}
-
-ContoCorrente &ContoCorrente::cercaTransazioni(std::string parolaCercata, std::string tipoRicerca) const {
-    if(tipoRicerca == "tipo") {
-        return ricercaTipoTrans(parolaCercata);
-    }
-    else if(tipoRicerca == "controparte") {
-        return ricercaControparte(parolaCercata);
-    }
-    else if(tipoRicerca == "descrizione") {
-        return ricercaDescrizione(parolaCercata);
-    }
-    else {
-        std::cout << "Tipo di ricerca non disponibile." << std::endl;
-        std::cout << "Tipi di ricerca possibili: 'tipo', 'controparte' e 'descrizione'." << std::endl;
-        return *new ContoCorrente();
-    }
-}
-
-ContoCorrente &ContoCorrente::ricercaTipoTrans(std::string tipoTrans) const {
-    ContoCorrente &nuovoconto = *new ContoCorrente();
-    for( const auto &transazione : storicoTransazioni ) {
-        if ( transazione->getTipoTransazione() == tipoTrans )
-            nuovoconto.getStoricoTransazioni().push_back(transazione);
-    }
-    return nuovoconto;
-}
-
-ContoCorrente &ContoCorrente::ricercaControparte(std::string controparte) const {
-    ContoCorrente &nuovoconto = *new ContoCorrente();
-    for( const auto &transazione : storicoTransazioni ) {
-        if ( transazione->getControparte() == controparte ) {
-            nuovoconto.getStoricoTransazioni().push_back(transazione);
-        }
-    }
-    return nuovoconto;
-}
-
-ContoCorrente &ContoCorrente::ricercaDescrizione(std::string descrizione) const {
-    ContoCorrente &nuovoconto = *new ContoCorrente();
-    for( const auto &transazione : storicoTransazioni ) {
-        if ( transazione->getDescrizione().find(descrizione) != std::string::npos ) {
-            nuovoconto.getStoricoTransazioni().push_back(transazione);
-            }
-    }
-    return nuovoconto;
-}
-
-bool ContoCorrente::eliminaTransazione(std::shared_ptr<Transazione> transazione) {
-    for( auto it = storicoTransazioni.begin(); it != storicoTransazioni.end(); ++it ) {
-        if (**it == *transazione) {
-            storicoTransazioni.erase(it);
-            return true;
-        }
-    }
-    return false;
-}
-
-
-// money pro

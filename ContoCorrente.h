@@ -1,19 +1,11 @@
 #ifndef MAIN_CPP_CONTOCORRENTE_H
 #define MAIN_CPP_CONTOCORRENTE_H
 
-// macro per stampare i float con 2 cifre decimali
-#define FIXED_FLOAT(x) std::fixed << std::setprecision(2) << x
 
+#include <fstream>
 #include <utility>
-#include <vector>
-#include <iostream>
-#include <sstream>
-#include <memory>
-#include <iomanip>
-#include "Data.h"
+#include "StoricoTransazioni.h"
 
-
-class Transazione;
 
 
 class ContoCorrente {
@@ -22,7 +14,7 @@ private:
     std::string idUtente {"NULL"}; // togliere
     std::string id;
     float saldo;
-    std::vector<std::shared_ptr<Transazione>> storicoTransazioni;
+    StoricoTransazioni storico;
     std::string percorsoFile;
 
 public:
@@ -37,27 +29,9 @@ public:
 
     bool deposita(float importo, const std::string &descrizione="Deposito", const std::string &mittente="");
 
-    std::string getStoricoToString() const;
-
     bool salvaDati() const;
 
     bool caricaDati();
-
-    ContoCorrente &cercaTransazioni(float importoMax, float importoMin=0.0) const;
-
-    ContoCorrente &cercaTransazioni(Data dataMax, Data dataMin=*(new Data("1900-01-01 00:00:00"))) const;
-
-    ContoCorrente &cercaTransazioni(std::string parolaCercata, std::string tipoRicerca="tipo") const;
-
-    ContoCorrente &ricercaTipoTrans(std::string tipoTrans) const;
-
-    ContoCorrente &ricercaControparte(std::string controparte) const;
-
-    ContoCorrente &ricercaDescrizione(std::string descrizione) const;
-
-    bool eliminaTransazione(std::shared_ptr<Transazione> transazione);
-
-//    std::vector<Transazione> cercaTransazioni(std::string tipo);
 
     bool verificaDisponibilità(float importo) const {
         if(importo <= saldo) { return true; }
@@ -72,11 +46,11 @@ public:
         return saldo;
     }
 
-    std::vector<std::shared_ptr<Transazione>> getStoricoTransazioni() const {
-        return storicoTransazioni;
+    StoricoTransazioni &getStoricoTransazioni() {
+        return storico;
     }
 
-    const std::string& getPercorsoFile() const {
+    const std::string &getPercorsoFile() const {
         return percorsoFile;
     }
 
