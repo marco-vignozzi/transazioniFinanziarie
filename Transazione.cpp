@@ -19,7 +19,6 @@ std::string Transazione::toString() const {
     return oss.str();
 }
 
-//TODO: testare modifica
 void Transazione::modifica(std::string campo, std::string nuovaStringa) {
     if(campo == "descrizione") {
         setDescrizione(nuovaStringa);

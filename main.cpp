@@ -38,6 +38,7 @@ int main() {
     marco->getConto("due")->invia(30,marco->getConto("uno"),"scambio");
     marco->getConto("due")->invia(50,marco->getConto("uno"),"scambio");
     StoricoTransazioni transazioniCercate = marco->getConto("due")->getStoricoTransazioni().cercaTransazioni("scambio", "descrizione");
+
     marco->getConto("due")->getStoricoTransazioni();
     marco->getConto("due")->getStoricoTransazioni().eliminaTransazioni(transazioniCercate.getTransazioni());
     std::cout << transazioniCercate.toString() << std::endl << marco->getConto("due")->getStoricoTransazioni().toString() << std::endl;

@@ -14,7 +14,6 @@ public:
 
     std::string toString() const;
 
-    // TODO: testare vari tipi di ricerca
     StoricoTransazioni &cercaTransazioni(float importoMax, float importoMin=0.0) const;
 
     StoricoTransazioni &cercaTransazioni(Data dataMax, Data dataMin=*(new Data("1900-01-01 00:00:00"))) const;
@@ -27,7 +26,6 @@ public:
 
     StoricoTransazioni &ricercaDescrizione(std::string descrizione) const;
 
-    // TODO: testare eliminazione
     bool eliminaTransazione(std::shared_ptr<Transazione> transazione);
 
     void eliminaTransazioni(std::vector<std::shared_ptr<Transazione>> transazioni);
@@ -36,7 +34,7 @@ public:
         transazioni.push_back(transazione);
     }
 
-    std::vector<std::shared_ptr<Transazione>> getTransazioni() const {
+    std::vector<std::shared_ptr<Transazione>> &getTransazioni() {
         return transazioni;
     }
 };

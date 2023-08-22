@@ -1,0 +1,11 @@
+Storico Transazioni Conto uno
+2020-8-22 15:17:43 - Transazione in uscita - Destinatario: Giovanni - Importo: 5.00 € - Descrizione: Invio per testare
+2020-8-22 15:17:43 - Transazione in uscita - Destinatario: Gemma - Importo: 5.00 € - Descrizione: Invio
+2021-10-22 15:17:43 - Transazione in ingresso - Mittente: Marco - Importo: 4.00 € - Descrizione: Invio
+2022-2-22 15:17:43 - Transazione in ingresso - Importo: 14.80 € - Descrizione: Deposito
+2023-4-22 15:17:43 - Transazione in uscita - Importo: 3.00 € - Descrizione: Prelievo
+2023-6-22 15:17:43 - Transazione in ingresso - Mittente: Marco - Importo: 30.00 € - Descrizione: scambio
+2023-8-22 15:17:43 - Transazione in ingresso - Mittente: Marco - Importo: 50.00 € - Descrizione: scambio
+
+Saldo disponibile: 90.00 €
+
