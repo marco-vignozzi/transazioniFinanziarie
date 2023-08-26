@@ -11,9 +11,10 @@ private:
     std::vector<std::shared_ptr<ContoCorrente>> contiCorrenti;
 
 public:
+    Utente() {}
     Utente(const std::string &id) : id(id) {}
 
-    bool invia(const std::string &idConto, std::shared_ptr<Utente> destinatario, const std::string &idContoDest, float importo, const std::string &descrizione="Invio");
+    bool invia(const std::string &idConto, Utente &destinatario, const std::string &idContoDest, float importo, const std::string &descrizione= "Invio");
 
     bool preleva(const std::string &idConto, float importo, const std::string &idDestinatario="", const std::string &descrizione="Prelievo");
 

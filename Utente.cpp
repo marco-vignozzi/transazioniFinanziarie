@@ -1,21 +1,21 @@
 #include "Utente.h"
 
 std::shared_ptr<ContoCorrente> Utente::getConto(const std::string &idConto) {
-    for( const auto &conto : contiCorrenti) {
+    for( auto &conto : contiCorrenti) {
         if ( conto->getID() == idConto ) {
             return conto;
         }
     }
-    return nullptr;
+    return std::make_shared<ContoCorrente>();
 }
 
-bool Utente::invia(const std::string &idConto, std::shared_ptr<Utente> destinatario, const std::string &idContoDest, float importo, const std::string &descrizione) {
+bool Utente::invia(const std::string &idConto, Utente &destinatario, const std::string &idContoDest, float importo, const std::string &descrizione) {
     if ( importo <= 0 ) {
         std::cout << "Impossibile inviare quantità negative o nulle di denaro." << std::endl;
         return false;
     }
-    if ( preleva(idConto, importo, destinatario->getID(), descrizione) ) {
-        destinatario->deposita(idContoDest, importo, destinatario->getID(), descrizione);
+    if ( preleva(idConto, importo, destinatario.getID(), descrizione) ) {
+        destinatario.deposita(idContoDest, importo, destinatario.getID(), descrizione);
         return true;
     }
     return false;
