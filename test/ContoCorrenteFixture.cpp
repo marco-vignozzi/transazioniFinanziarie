@@ -7,8 +7,6 @@ class ContoCorrenteSuite : public ::testing::Test {
 
 protected:
     void SetUp() override {
-        Utente marco("Marco");
-        Utente giovanni("Giovanni");
         std::shared_ptr<ContoCorrente> contoMarco = std::make_shared<ContoCorrente>("uno", 10.0);
         std::shared_ptr<ContoCorrente> contoGiovanni = std::make_shared<ContoCorrente>("uno");
 
@@ -50,8 +48,8 @@ protected:
         return false;
     }
 
-    Utente marco;
-    Utente giovanni;
+    Utente marco = *new Utente("Marco");
+    Utente giovanni = *new Utente("Giovanni");
 };
 
 

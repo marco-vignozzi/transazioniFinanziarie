@@ -20,7 +20,7 @@ public:
 
     bool deposita(const std::string &idConto, float importo, const std::string &idMittente="", const std::string &descrizione="Deposito");
 
-    void aggiungiConto(std::shared_ptr<ContoCorrente> conto) {
+    void aggiungiConto(const std::shared_ptr<ContoCorrente> conto) {
         this -> contiCorrenti.push_back(conto);
     }
 

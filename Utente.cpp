@@ -1,12 +1,13 @@
 #include "Utente.h"
 
 std::shared_ptr<ContoCorrente> Utente::getConto(const std::string &idConto) {
-    for( auto &conto : contiCorrenti) {
+    for( const auto &conto : contiCorrenti) {
         if ( conto->getID() == idConto ) {
             return conto;
         }
     }
-    return std::make_shared<ContoCorrente>();
+    std::shared_ptr<ContoCorrente> contoFittizio = std::make_shared<ContoCorrente>();
+    return contoFittizio;
 }
 
 bool Utente::invia(const std::string &idConto, Utente &destinatario, const std::string &idContoDest, float importo, const std::string &descrizione) {

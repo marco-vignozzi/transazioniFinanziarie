@@ -6,7 +6,6 @@ class StoricoTransazioniSuite : public ::testing::Test {
 
 protected:
     void SetUp() override {
-        Utente marco("Marco");
         std::shared_ptr<ContoCorrente> contoMarco(new ContoCorrente("uno", 10.0));
 
         marco.aggiungiConto(contoMarco);
@@ -19,7 +18,7 @@ protected:
     Data dataMedia = *new Data("2022-2-22 15:18:00");
     Data dataNuova = *new Data("2023-8-22 15:17:43");
 
-    Utente marco;
+     Utente marco = *new Utente("Marco");
 };
 
 
