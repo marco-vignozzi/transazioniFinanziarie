@@ -1,53 +1,5 @@
 #include "ContoCorrente.h"
 
-// Questo metodo esegue lo scambio di fondi tra due conti. Lo scambio è effettuato eseguendo un prelievo (se possibile)
-// dal conto chiamante seguito da un deposito sul conto "destinatario", passato come parametro.
-// Vengono create ed eseguite due transizioni, in ingresso per il destinatario e in uscita per il chiamante.
-// Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
-bool ContoCorrente::invia(float importo, std::shared_ptr<ContoCorrente> destinatario, const std::string &descrizione) {
-    if ( importo <= 0 ) {
-       std::cout << "Impossibile inviare quantità negative o nulle di denaro." << std::endl;
-        return false;
-    }
-    if ( preleva(importo, descrizione, destinatario->getIDUtente()) ) {
-        destinatario->deposita(importo, descrizione, destinatario->getIDUtente());
-        return true;
-    }
-    return false;
-}
-
-// Questo metodo aggiunge fondi al conto corrente e salva la relativa transazione in ingresso.
-// Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
-bool ContoCorrente::deposita(float importo, const std::string &descrizione, const std::string &mittente) {
-    if ( importo <= 0 ) {
-        std::cout << "Impossibile depositare quantità negative o nulle di denaro." << std::endl;
-        return false;
-    }
-    std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>(descrizione, importo, "ingresso", mittente);
-    saldo += importo;
-    storico.aggiungiTransazione(transazione);
-    return true;
-}
-
-// Questo metodo sottrae fondi al conto corrente e salva la relativa transazione in uscita.
-// Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
-bool ContoCorrente::preleva(float importo, const std::string &descrizione, const std::string &destinatario) {
-    if ( importo <= 0 ) {
-        std::cout << "Impossibile prelevare quantità negative o nulle di denaro." << std::endl;
-        return false;
-    }
-    if ( verificaDisponibilità(importo) ) {
-        std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>(descrizione, importo, "uscita", destinatario);
-        saldo -= importo;
-        storico.aggiungiTransazione(transazione);
-        return true;
-    }
-    else {
-        std::cout << "L'utente " << idUtente << " non ha fondi sufficienti per completare l'operazione."
-                  << std::endl;
-        return false;
-    }
-}
 
 // Questo metodo permette di salvare i dati di un conto corrente (saldo e storico transazioni) in un file ".txt".
 // Ritorna "true" se l'operazione va a buon fine, "false" altrimenti.
@@ -145,4 +97,14 @@ bool ContoCorrente::caricaDati() {
         std::cout << "Impossibile aprire il file: " << this->percorsoFile << std::endl;
         return false;
     }
+}
+
+void ContoCorrente::aggiungiTransazione(std::shared_ptr<Transazione> &transazione) {
+    if(transazione->getTipoTransazione() == "ingresso") {
+        saldo += transazione->getImporto();
+    }
+    else {
+        saldo -= transazione->getImporto();
+    }
+    storico.aggiungiTransazione(transazione);
 }

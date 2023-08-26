@@ -2,13 +2,13 @@
 
 
 int main() {
-    Utente *marco = new Utente("Marco");
-    Utente *giovanni = new Utente("Giovanni");
-    Utente *gemma = new Utente("Gemma");
-    std::shared_ptr<ContoCorrente> contoMarco1( new ContoCorrente(marco->getID(), "uno", 10.0) );
-    std::shared_ptr<ContoCorrente> contoMarco2( new ContoCorrente(marco->getID(), "due", 500.0) );
-    std::shared_ptr<ContoCorrente> contoGiovanni( new ContoCorrente(giovanni->getID(), "uno") );
-    std::shared_ptr<ContoCorrente> contoGemma( new ContoCorrente(gemma->getID(), "uno", 20.3) );
+    std::shared_ptr<Utente> marco = std::make_shared<Utente>("Marco");
+    std::shared_ptr<Utente> giovanni = std::make_shared<Utente>("Giovanni");
+    std::shared_ptr<Utente> gemma = std::make_shared<Utente>("Gemma");
+    std::shared_ptr<ContoCorrente> contoMarco1 = std::make_shared<ContoCorrente>("uno", 10.0);
+    std::shared_ptr<ContoCorrente> contoMarco2 = std::make_shared<ContoCorrente>("due", 500.0);
+    std::shared_ptr<ContoCorrente> contoGiovanni = std::make_shared<ContoCorrente>("uno");
+    std::shared_ptr<ContoCorrente> contoGemma = std::make_shared<ContoCorrente>("uno", 20.3);
 
 
     marco->aggiungiConto(contoMarco1);
@@ -25,23 +25,27 @@ int main() {
 
 //    std::cout << marco -> getContoCorrente().getStoricoToString() << std::endl;
 
-    marco->getConto("uno")->invia(5.0, giovanni->getConto("uno"));
-    marco->getConto("uno")->invia(5.0, gemma->getConto("uno"));
-    giovanni->getConto("uno")->invia(4, marco->getConto("uno"));
-    marco->getConto("uno")->deposita(14.8);
-    marco->getConto("uno")->preleva(3);
-    gemma->getConto("uno")->preleva(20.1);
-    gemma->getConto("uno")->invia(3.8, giovanni->getConto("uno"));
+    marco->invia("uno", giovanni, "uno", 5.0);
+    marco->invia("uno", gemma, "uno", 5.0);
+    giovanni->invia("uno", marco, "uno", 4);
+    marco->deposita("uno", 14.8);
+    marco->preleva("uno", 3);
+    gemma->preleva("uno", 20.1);
+    gemma->invia("uno", giovanni, "uno", 3.8);
 
-    marco->getConto("due")->preleva(100);
-    marco->getConto("due")->deposita(10);
-    marco->getConto("due")->invia(30,marco->getConto("uno"),"scambio");
-    marco->getConto("due")->invia(50,marco->getConto("uno"),"scambio");
+    marco->preleva("due", 100);
+    marco->deposita("due", 10);
+    marco->invia("due", marco, "uno", 30, "scambio");
+    marco->invia("due", marco,"uno", 50,"scambio");
     StoricoTransazioni transazioniCercate = marco->getConto("due")->getStoricoTransazioni().cercaTransazioni("scambio", "descrizione");
 
-    marco->getConto("due")->getStoricoTransazioni();
+    std::cout << "Transazioni prima dell'eliminazione" << std::endl;
+    std::cout << marco->getConto("due")->getStoricoTransazioni().toString() << std::endl;
     marco->getConto("due")->getStoricoTransazioni().eliminaTransazioni(transazioniCercate.getTransazioni());
-    std::cout << transazioniCercate.toString() << std::endl << marco->getConto("due")->getStoricoTransazioni().toString() << std::endl;
+    std::cout << "Transazioni eliminate" << std::endl;
+    std::cout << transazioniCercate.toString() << std::endl;
+    std::cout << "Transazioni rimaste" << std::endl;
+    std::cout << marco->getConto("due")->getStoricoTransazioni().toString() << std::endl;
     //std::cout << "Soldi di marco: " << marco->getContoCorrente().getSaldo() << std::endl;
     //std::cout << "Soldi di giovanni: " << giovanni->getContoCorrente().getSaldo() << std::endl;
     //std::cout << "Soldi di gemma: " << sergio->getContoCorrente().getSaldo() << std::endl;

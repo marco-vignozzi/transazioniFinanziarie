@@ -13,21 +13,20 @@ private:
 public:
     Utente(const std::string &id) : id(id) {}
 
+    bool invia(const std::string &idConto, std::shared_ptr<Utente> destinatario, const std::string &idContoDest, float importo, const std::string &descrizione="Invio");
+
+    bool preleva(const std::string &idConto, float importo, const std::string &idDestinatario="", const std::string &descrizione="Prelievo");
+
+    bool deposita(const std::string &idConto, float importo, const std::string &idMittente="", const std::string &descrizione="Deposito");
+
     void aggiungiConto(std::shared_ptr<ContoCorrente> conto) {
         this -> contiCorrenti.push_back(conto);
     }
 
+    std::shared_ptr<ContoCorrente> getConto(const std::string &idConto);
+
     std::vector<std::shared_ptr<ContoCorrente>> getConti() {
         return contiCorrenti;
-    }
-
-    std::shared_ptr<ContoCorrente> getConto(std::string idConto) {
-        for(const auto &conto: contiCorrenti) {
-            if ( conto->getID() == idConto ) {
-                return conto;
-            }
-        }
-        return nullptr;
     }
 
     std::string getID() const {

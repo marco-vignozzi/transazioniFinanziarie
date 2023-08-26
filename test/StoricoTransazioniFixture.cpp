@@ -6,13 +6,10 @@ class StoricoTransazioniSuite : public ::testing::Test {
 
 protected:
     void SetUp() override {
-        marco = new Utente("Marco");
-        giovanni = new Utente("Giovanni");
-        std::shared_ptr<ContoCorrente> contoMarco( new ContoCorrente(marco->getID(), "uno") );
-        std::shared_ptr<ContoCorrente> contoGiovanni( new ContoCorrente(giovanni->getID(), "uno", 100.0) );
+        Utente* marco = new Utente("Marco");
+        std::shared_ptr<ContoCorrente> contoMarco(new ContoCorrente("uno", 10.0));
 
         marco->aggiungiConto(contoMarco);
-        giovanni->aggiungiConto(contoGiovanni);
 
         marco->getConto("uno")->setPercorsoFile("../../test/docs/storico1.txt");
         marco->getConto("uno")->caricaDati();
@@ -23,7 +20,6 @@ protected:
     Data dataNuova = *new Data("2023-8-22 15:17:43");
 
     Utente* marco;
-    Utente* giovanni;
 };
 
 
@@ -68,8 +64,10 @@ TEST_F(StoricoTransazioniSuite, Eliminazione) {
     StoricoTransazioni transDaEliminare = marco->getConto("uno")->getStoricoTransazioni().cercaTransazioni("uscita");
     ASSERT_EQ(marco->getConto("uno")->getStoricoTransazioni().getTransazioni().size(), 7);
     marco->getConto("uno")->getStoricoTransazioni().eliminaTransazioni(transDaEliminare.getTransazioni());
+    // verifico che abbia eliminato tutte le transazioni in uscita
     ASSERT_EQ(marco->getConto("uno")->getStoricoTransazioni().getTransazioni().size(), 4);
     marco->getConto("uno")->getStoricoTransazioni().eliminaTransazioni(marco->getConto("uno")->getStoricoTransazioni().getTransazioni());
+    // verifico che abbia eliminato anche tutte le transazioni in ingresso
     ASSERT_EQ(marco->getConto("uno")->getStoricoTransazioni().getTransazioni().size(), 0);
 }
 

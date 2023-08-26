@@ -9,7 +9,8 @@ set(SOURCE_FILES main.cpp Transazione.h ContoCorrente.h Utente.h ContoCorrente.c
         Data.cpp
         Data.h
         StoricoTransazioni.cpp
-        StoricoTransazioni.h)
+        StoricoTransazioni.h
+        Utente.cpp)
 add_executable(transazioniFinanziarie main.cpp)
 add_library(core ${SOURCE_FILES})
 target_link_libraries(transazioniFinanziarie core)
