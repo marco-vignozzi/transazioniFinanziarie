@@ -2,6 +2,7 @@
 
 
 int main() {
+
     Utente marco = *new Utente("Marco");
     Utente giovanni = *new Utente("Giovanni");
     Utente gemma = *new Utente("Gemma");
@@ -19,11 +20,6 @@ int main() {
     marco.getConto("due")->setPercorsoFile("../test/docs/contoMarco2.txt");
     giovanni.getConto("uno")->setPercorsoFile("../docs/contoGiovanni.txt");
     gemma.getConto("uno")->setPercorsoFile("../docs/contoGemma.txt");
-
-//    marco.getContoCorrente().caricaDati();
-//    giovanni.getContoCorrente().caricaDati();
-
-//    std::cout << marcoo. getContoCorrente().getStoricoToString() << std::endl;
 
     marco.invia("uno", giovanni, "uno", 5.0);
     marco.invia("uno", gemma, "uno", 5.0);
@@ -46,11 +42,10 @@ int main() {
     std::cout << transazioniCercate.toString() << std::endl;
     std::cout << "Transazioni rimaste" << std::endl;
     std::cout << marco.getConto("due")->getStoricoTransazioni().toString() << std::endl;
-    //std::cout << "Soldi di marcoo: " << marc.getContoCorrente().getSaldo() << std::endl;
-    //std::cout << "Soldi di giovannii: " << giovann.getContoCorrente().getSaldo() << std::endl;
-    //std::cout << "Soldi di gemmaa: " << sergi.getContoCorrente().getSaldo() << std::endl;
+
 
     marco.getConto("uno")->salvaDati();
+    marco.getConto("due")->salvaDati();
     giovanni.getConto("uno")->salvaDati();
     gemma.getConto("uno")->salvaDati();
 }

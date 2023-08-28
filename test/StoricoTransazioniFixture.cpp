@@ -18,7 +18,7 @@ protected:
     Data dataMedia = *new Data("2022-2-22 15:18:00");
     Data dataNuova = *new Data("2023-8-22 15:17:43");
 
-     Utente marco = *new Utente("Marco");
+    Utente marco = *new Utente("Marco");
 };
 
 

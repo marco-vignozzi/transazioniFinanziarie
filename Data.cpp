@@ -14,6 +14,29 @@ Data::Data(const std::string &dataStr) {
     ss >> minuto;
     ss.ignore();
     ss >> secondo;
+
+    if (!verificaData()) {
+        std::cout << "ATTENZIONE: " << toString() << " non è una data valida." << std::endl;
+    }
+}
+
+bool Data::verificaData() const {
+    if (anno < 0 || mese < 1 || mese > 12 || giorno < 1)
+        return false;
+
+    int giorniMese;
+    if (mese == 2) {
+        giorniMese = (anno % 4 == 0 && (anno % 100 != 0 || anno % 400 == 0)) ? 29 : 28;
+    } else if (mese == 4 || mese == 6 || mese == 9 || mese == 11) {
+        giorniMese = 30;
+    } else {
+        giorniMese = 31;
+    }
+
+    return  giorno <= giorniMese &&
+            ora >= 0 && ora < 24 &&
+            minuto >= 0 && minuto < 60 &&
+            secondo >= 0 && secondo < 60;
 }
 
 bool Data::operator>(const Data &other) const {
@@ -56,7 +79,13 @@ bool Data::operator==(const Data &other) const {
 
 std::string Data::toString() const {
     std::ostringstream ss;
-    ss << anno << '-' << mese << '-' << giorno << ' ' << ora << ':' << minuto << ':' << secondo;
+    ss << std::setfill('0'); // Imposta il riempimento con '0'
+
+    // Formatta l'anno, il mese e il giorno
+    ss << anno << '-' << std::setw(2) << mese << '-' << std::setw(2) << giorno << ' ';
+
+    // Formatta l'ora, il minuto e il secondo
+    ss << std::setw(2) << ora << ':' << std::setw(2) << minuto << ':' << std::setw(2) << secondo;
+
     return ss.str();
 }
-

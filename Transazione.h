@@ -4,7 +4,7 @@
 // macro per stampare i float con 2 cifre decimali
 #define FIXED_FLOAT(x) std::fixed << std::setprecision(2) << x
 
-#include <iomanip>
+
 #include "Data.h"
 
 

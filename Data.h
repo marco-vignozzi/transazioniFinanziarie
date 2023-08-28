@@ -1,6 +1,8 @@
 #ifndef README_MD_DATA_H
 #define README_MD_DATA_H
 
+
+#include <iomanip>
 #include <iostream>
 #include <ctime>
 #include <sstream>
@@ -24,6 +26,8 @@ public:
     }
 
     Data(const std::string& dataStr);
+
+    bool verificaData() const;
 
     std::string toString() const;
 

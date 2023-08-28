@@ -1,11 +1,11 @@
 Storico Transazioni Conto uno
-2023-8-26 19:49:59 - Transazione in uscita - Destinatario: Giovanni - Importo: 5.00 € - Descrizione: Invio
-2023-8-26 19:49:59 - Transazione in uscita - Destinatario: Gemma - Importo: 5.00 € - Descrizione: Invio
-2023-8-26 19:49:59 - Transazione in ingresso - Mittente: Marco - Importo: 4.00 € - Descrizione: Invio
-2023-8-26 19:49:59 - Transazione in ingresso - Importo: 14.80 € - Descrizione: Deposito
-2023-8-26 19:49:59 - Transazione in uscita - Importo: 3.00 € - Descrizione: Prelievo
-2023-8-26 19:49:59 - Transazione in ingresso - Mittente: Marco - Importo: 30.00 € - Descrizione: scambio
-2023-8-26 19:49:59 - Transazione in ingresso - Mittente: Marco - Importo: 50.00 € - Descrizione: scambio
+2023-08-28 13:59:56 - Transazione in uscita - Destinatario: Giovanni - Importo: 5.00 € - Descrizione: Invio
+2023-08-28 13:59:56 - Transazione in uscita - Destinatario: Gemma - Importo: 5.00 € - Descrizione: Invio
+2023-08-28 13:59:56 - Transazione in ingresso - Mittente: Marco - Importo: 4.00 € - Descrizione: Invio
+2023-08-28 13:59:56 - Transazione in ingresso - Importo: 14.80 € - Descrizione: Deposito
+2023-08-28 13:59:56 - Transazione in uscita - Importo: 3.00 € - Descrizione: Prelievo
+2023-08-28 13:59:56 - Transazione in ingresso - Mittente: Marco - Importo: 30.00 € - Descrizione: scambio
+2023-08-28 13:59:56 - Transazione in ingresso - Mittente: Marco - Importo: 50.00 € - Descrizione: scambio
 
 Saldo disponibile: 95.80 €
 
