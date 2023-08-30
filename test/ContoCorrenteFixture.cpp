@@ -53,6 +53,23 @@ protected:
 };
 
 
+TEST_F(ContoCorrenteSuite, EliminaConto) {
+    ASSERT_FALSE(marco.eliminaConto("due"));
+    ASSERT_TRUE(marco.eliminaConto("uno"));
+}
+
+TEST_F(ContoCorrenteSuite, AggiungiConto) {
+    ASSERT_FALSE(marco.aggiungiConto("uno"));
+    ASSERT_TRUE(marco.aggiungiConto("due"));
+
+    ASSERT_TRUE(marco.eliminaConto("due"));
+
+    std::shared_ptr<ContoCorrente> nuovoSbagliato = std::make_shared<ContoCorrente>("uno");
+    std::shared_ptr<ContoCorrente> nuovoGiusto = std::make_shared<ContoCorrente>("due");
+    ASSERT_FALSE(marco.aggiungiConto(nuovoSbagliato));
+    ASSERT_TRUE(marco.aggiungiConto(nuovoGiusto));
+}
+
 TEST_F(ContoCorrenteSuite, InvioFondi) {
     // testo invio negativo
     ASSERT_FALSE( marco.invia("uno", giovanni, "uno",-10) );

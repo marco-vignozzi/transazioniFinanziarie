@@ -1,7 +1,7 @@
 #include "Utente.h"
 
 std::shared_ptr<ContoCorrente> Utente::getConto(const std::string &idConto) {
-    for( const auto &conto : contiCorrenti) {
+    for( const auto &conto : contiCorrente) {
         if ( conto->getID() == idConto ) {
             return conto;
         }
@@ -47,4 +47,38 @@ bool Utente::deposita(const std::string &idConto, float importo, const std::stri
     std::shared_ptr<Transazione> transazione = std::make_shared<Transazione>(descrizione, importo, "ingresso", idMittente);
     this->getConto(idConto)->aggiungiTransazione(transazione);
     return true;
+}
+
+bool Utente::aggiungiConto(const std::string &idConto, float saldoIniziale) {
+    for (const auto &conto: contiCorrente) {
+        if (idConto == conto->getID()) {
+            std::cout << "ERRORE: id conto '" << idConto << "' già esistente. Selezionare un altro id."
+                      << std::endl;
+            return false;
+        }
+    }
+    this->contiCorrente.push_back(std::make_shared<ContoCorrente>(idConto, saldoIniziale));
+    return true;
+}
+
+bool Utente::aggiungiConto(std::shared_ptr<ContoCorrente> conto) {
+    for (const auto &c: contiCorrente) {
+        if ( conto->getID() == c->getID()) {
+            std::cout << "ERRORE: id conto '" << conto->getID() << "' già esistente. Selezionare un altro id."
+                      << std::endl;
+            return false;
+        }
+    }
+    this->contiCorrente.push_back(conto);
+    return true;
+}
+
+bool Utente::eliminaConto(const std::string &idConto) {
+     for(auto it = contiCorrente.begin(); it != contiCorrente.end(); ++it ) {
+        if (idConto == it->get()->getID()) {
+            contiCorrente.erase(it);
+            return true;
+        }
+    }
+    return false;
 }

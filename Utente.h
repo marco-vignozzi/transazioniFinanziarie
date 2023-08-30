@@ -8,7 +8,7 @@ class Utente {
 
 private:
     std::string id;
-    std::vector<std::shared_ptr<ContoCorrente>> contiCorrenti;
+    std::vector<std::shared_ptr<ContoCorrente>> contiCorrente;
 
 public:
     Utente() {}
@@ -20,14 +20,16 @@ public:
 
     bool deposita(const std::string &idConto, float importo, const std::string &idMittente="", const std::string &descrizione="Deposito");
 
-    void aggiungiConto(const std::shared_ptr<ContoCorrente> conto) {
-        this -> contiCorrenti.push_back(conto);
-    }
+    bool aggiungiConto(const std::string &idConto, float saldoIniziale=0);
+
+    bool aggiungiConto(std::shared_ptr<ContoCorrente> conto);
+
+    bool eliminaConto(const std::string &idConto);
 
     std::shared_ptr<ContoCorrente> getConto(const std::string &idConto);
 
     std::vector<std::shared_ptr<ContoCorrente>> getConti() {
-        return contiCorrenti;
+        return contiCorrente;
     }
 
     std::string getID() const {
