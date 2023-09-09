@@ -18,13 +18,13 @@ public:
 
     StoricoTransazioni &cercaTransazioni(Data dataMax, Data dataMin=*(new Data("1900-01-01 00:00:00"))) const;
 
-    StoricoTransazioni &cercaTransazioni(std::string parolaCercata, std::string tipoRicerca="tipo") const;
+    StoricoTransazioni &cercaTransazioni(const std::string &parolaCercata, const std::string &tipoRicerca= "tipo") const;
 
-    StoricoTransazioni &ricercaTipoTrans(std::string tipoTrans) const;
+    StoricoTransazioni &ricercaTipoTrans(const std::string &tipoTrans) const;
 
-    StoricoTransazioni &ricercaControparte(std::string controparte) const;
+    StoricoTransazioni &ricercaControparte(const std::string &controparte) const;
 
-    StoricoTransazioni &ricercaDescrizione(std::string descrizione) const;
+    StoricoTransazioni &ricercaDescrizione(const std::string &descrizione) const;
 
     bool eliminaTransazione(std::shared_ptr<Transazione> transazione);
 

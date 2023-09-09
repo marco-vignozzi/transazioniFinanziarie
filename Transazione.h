@@ -5,6 +5,8 @@
 #define FIXED_FLOAT(x) std::fixed << std::setprecision(2) << x
 
 
+#include <utility>
+
 #include "Data.h"
 
 
@@ -21,9 +23,9 @@ private:
 public:
     Transazione() {}
 
-    Transazione(const std::string &descrizione, float importo, const std::string &tipo, const std::string &controparte="",
+    Transazione(std::string descrizione, float importo, std::string tipo, std::string controparte="",
                 const std::string &data="") :
-                    descrizione(descrizione), importo(importo), tipoTransazione(tipo), controparte(controparte) {
+                    descrizione(std::move(descrizione)), importo(importo), tipoTransazione(std::move(tipo)), controparte(std::move(controparte)) {
 
         for (char &c: tipoTransazione) {
             c = std::tolower(c);
@@ -38,13 +40,9 @@ public:
 
     std::string toString() const;
 
-    void modifica(std::string campo, std::string nuovaStringa);
+    void modifica(const std::string &campo, const std::string &nuovaStringa);
 
     bool operator==(const Transazione& other) const;
-
-    std::string getDescrizione() const {
-        return descrizione;
-    }
 
     float getImporto() const {
         return importo;
@@ -60,6 +58,10 @@ public:
 
     const std::string &getControparte() const {
         return controparte;
+    }
+
+    const std::string &getDescrizione() const {
+        return descrizione;
     }
 
     void setImporto(float importo) {

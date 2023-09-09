@@ -31,7 +31,7 @@ StoricoTransazioni &StoricoTransazioni::cercaTransazioni(Data dataMax, Data data
     return nuovoStorico;
 }
 
-StoricoTransazioni &StoricoTransazioni::cercaTransazioni(std::string parolaCercata, std::string tipoRicerca) const {
+StoricoTransazioni &StoricoTransazioni::cercaTransazioni(const std::string &parolaCercata, const std::string &tipoRicerca) const {
     if(tipoRicerca == "tipo") {
         return ricercaTipoTrans(parolaCercata);
     }
@@ -48,7 +48,7 @@ StoricoTransazioni &StoricoTransazioni::cercaTransazioni(std::string parolaCerca
     }
 }
 
-StoricoTransazioni &StoricoTransazioni::ricercaTipoTrans(std::string tipoTrans) const {
+StoricoTransazioni &StoricoTransazioni::ricercaTipoTrans(const std::string &tipoTrans) const {
     StoricoTransazioni &nuovoStorico = *new StoricoTransazioni();
     for( const auto &transazione : transazioni) {
         if ( transazione->getTipoTransazione() == tipoTrans )
@@ -57,7 +57,7 @@ StoricoTransazioni &StoricoTransazioni::ricercaTipoTrans(std::string tipoTrans) 
     return nuovoStorico;
 }
 
-StoricoTransazioni &StoricoTransazioni::ricercaControparte(std::string controparte) const {
+StoricoTransazioni &StoricoTransazioni::ricercaControparte(const std::string &controparte) const {
     StoricoTransazioni &nuovoStorico = *new StoricoTransazioni();
     for( const auto &transazione : transazioni ) {
         if ( transazione->getControparte() == controparte ) {
@@ -67,7 +67,7 @@ StoricoTransazioni &StoricoTransazioni::ricercaControparte(std::string contropar
     return nuovoStorico;
 }
 
-StoricoTransazioni &StoricoTransazioni::ricercaDescrizione(std::string descrizione) const {
+StoricoTransazioni &StoricoTransazioni::ricercaDescrizione(const std::string &descrizione) const {
     StoricoTransazioni &nuovoStorico = *new StoricoTransazioni();
     for( const auto &transazione : transazioni ) {
         if ( transazione->getDescrizione().find(descrizione) != std::string::npos ) {

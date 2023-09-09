@@ -1,6 +1,8 @@
 #ifndef MAIN_CPP_UTENTE_H
 #define MAIN_CPP_UTENTE_H
 
+#include <utility>
+
 #include "ContoCorrente.h"
 
 
@@ -12,7 +14,7 @@ private:
 
 public:
     Utente() {}
-    Utente(const std::string &id) : id(id) {}
+    Utente(std::string id) : id(std::move(id)) {}
 
     bool invia(const std::string &idConto, Utente &destinatario, const std::string &idContoDest, float importo, const std::string &descrizione= "Invio");
 
@@ -28,11 +30,7 @@ public:
 
     std::shared_ptr<ContoCorrente> getConto(const std::string &idConto);
 
-    std::vector<std::shared_ptr<ContoCorrente>> getConti() {
-        return contiCorrente;
-    }
-
-    std::string getID() const {
+    const std::string &getID() const {
         return id;
     }
 

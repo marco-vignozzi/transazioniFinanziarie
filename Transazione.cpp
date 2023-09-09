@@ -19,7 +19,7 @@ std::string Transazione::toString() const {
     return oss.str();
 }
 
-void Transazione::modifica(std::string campo, std::string nuovaStringa) {
+void Transazione::modifica(const std::string &campo, const std::string &nuovaStringa) {
     if(campo == "descrizione") {
         setDescrizione(nuovaStringa);
     }
